@@ -6,7 +6,9 @@ namespace MarsRover
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            InputProcessor inputProcessor = new InputProcessor();
+            // Console.WriteLine(inputProcessor.TurnInputIntoCommand("l").Instruction);
+            Console.WriteLine(RoverInstruction.TurnRight - 1);
         }
     }
 }
