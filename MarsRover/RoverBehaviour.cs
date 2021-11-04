@@ -33,22 +33,22 @@ namespace MarsRover
 
         private int MoveAlongXCoordinate(int coordinate, Direction currentDirection, RoverInstruction instruction)
         {
-            if (currentDirection == Direction.North || currentDirection == Direction.South)
+            if (currentDirection is Direction.North or Direction.South)
             {
                 return coordinate;
             }
 
             if (instruction == RoverInstruction.MoveForward)
             {
-                return currentDirection == Direction.East ? coordinate++ : coordinate--;
+                return currentDirection == Direction.East ? coordinate + 1 : coordinate - 1;
             }
             
-            return currentDirection == Direction.East ? coordinate-- : coordinate++;
+            return currentDirection == Direction.East ? coordinate - 1 : coordinate + 1;
         }
         
         private int MoveAlongYCoordinate(int coordinate, Direction currentDirection, RoverInstruction instruction)
         {
-            if (currentDirection == Direction.East || currentDirection == Direction.West)
+            if (currentDirection is Direction.East or Direction.West)
             {
                 return coordinate;
             }
