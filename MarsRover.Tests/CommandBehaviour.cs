@@ -3,7 +3,7 @@ using Xunit;
 
 namespace MarsRover.Tests
 {
-    public class RoverBehaviourTests
+    public class CommandTests
     {
         private InputProcessor _inputProcessor = new InputProcessor();
         

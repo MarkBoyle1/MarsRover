@@ -1,6 +1,6 @@
 namespace MarsRover
 {
-    public enum RoverBehaviour
+    public enum RoverInstruction
     {
         TurnLeft,
         TurnRight,
