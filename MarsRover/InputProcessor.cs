@@ -8,6 +8,7 @@ namespace MarsRover
         public const string TurnRight = "r";
         public const string MoveForward = "f";
         public const string MoveBack = "b";
+        
         public Command TurnInputIntoCommand(string input)
         {
             RoverInstruction instruction = SelectInstruction(input);

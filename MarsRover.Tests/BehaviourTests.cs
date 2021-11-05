@@ -46,7 +46,7 @@ namespace MarsRover.Tests
 
             int expectResult = 2;
 
-            int actualResult = roverLocation.YCoordinate;
+            int actualResult = roverLocation.Coordinate.YCoordinate;
             
             Assert.Equal(expectResult, actualResult);
         }
@@ -61,7 +61,7 @@ namespace MarsRover.Tests
 
             int expectResult = 3;
 
-            int actualResult = roverLocation.YCoordinate;
+            int actualResult = roverLocation.Coordinate.YCoordinate;
             
             Assert.Equal(expectResult, actualResult);
         }
@@ -74,9 +74,9 @@ namespace MarsRover.Tests
             
             roverLocation = _roverBehaviour.ExecuteCommand(roverLocation, command);
 
-            int expectResult = 1;
+            int expectResult = 2;
 
-            int actualResult = roverLocation.XCoordinate;
+            int actualResult = roverLocation.Coordinate.XCoordinate;
             
             Assert.Equal(expectResult, actualResult);
         }
