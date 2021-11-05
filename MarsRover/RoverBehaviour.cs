@@ -6,8 +6,8 @@ namespace MarsRover
     {
         public RoverLocation ExecuteCommand(RoverLocation location, Command command)
         {
-            int xCoordinate = location.XCoordinate;
-            int yCoordinate = location.YCoordinate;
+            int xCoordinate = location.Coordinate.XCoordinate;
+            int yCoordinate = location.Coordinate.YCoordinate;
             Direction directionFacing = location.DirectionFacing;
             
             switch (command.Instruction)
