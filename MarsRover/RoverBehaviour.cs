@@ -4,6 +4,7 @@ namespace MarsRover
 {
     public class RoverBehaviour
     {
+        private int sizeOfGrid = 10;
         public RoverLocation ExecuteCommand(RoverLocation location, Command command)
         {
             int xCoordinate = location.Coordinate.XCoordinate;
@@ -33,32 +34,55 @@ namespace MarsRover
 
         private int MoveAlongXCoordinate(int coordinate, Direction currentDirection, RoverInstruction instruction)
         {
+            int newCoordinate = coordinate;
+
             if (currentDirection is Direction.North or Direction.South)
             {
-                return coordinate;
+                return newCoordinate;
             }
 
             if (instruction == RoverInstruction.MoveForward)
             {
-                return currentDirection == Direction.East ? coordinate + 1 : coordinate - 1;
+                newCoordinate = currentDirection == Direction.East ? coordinate + 1 : coordinate - 1;
+                return WrapAroundPlanetIfRequired(newCoordinate, sizeOfGrid);
             }
             
-            return currentDirection == Direction.East ? coordinate - 1 : coordinate + 1;
+            newCoordinate = currentDirection == Direction.East ? coordinate - 1 : coordinate + 1;
+            return WrapAroundPlanetIfRequired(newCoordinate, sizeOfGrid);
         }
         
         private int MoveAlongYCoordinate(int coordinate, Direction currentDirection, RoverInstruction instruction)
         {
+            int newCoordinate = coordinate;
+            
             if (currentDirection is Direction.East or Direction.West)
             {
-                return coordinate;
+                return newCoordinate;
             }
 
             if (instruction == RoverInstruction.MoveForward)
             {
-                return currentDirection == Direction.North ? coordinate - 1 : coordinate + 1;
+                newCoordinate = currentDirection == Direction.North ? coordinate - 1 : coordinate + 1;
+                return WrapAroundPlanetIfRequired(newCoordinate, sizeOfGrid);
             }
             
-            return currentDirection == Direction.North ? coordinate + 1 : coordinate - 1;
+            newCoordinate = currentDirection == Direction.North ? coordinate + 1 : coordinate - 1;
+            return WrapAroundPlanetIfRequired(newCoordinate, sizeOfGrid);
+        }
+
+        private int WrapAroundPlanetIfRequired(int coordinate, int sizeOfGrid)
+        {
+            if (coordinate < 0)
+            {
+                return sizeOfGrid - 1;
+            }
+
+            if (coordinate > sizeOfGrid - 1)
+            {
+                return 0;
+            }
+
+            return coordinate;
         }
     }
 }
