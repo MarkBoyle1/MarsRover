@@ -55,10 +55,10 @@ namespace MarsRover
 
             if (instruction == RoverInstruction.MoveForward)
             {
-                return currentDirection == Direction.North ? coordinate + 1 : coordinate - 1;
+                return currentDirection == Direction.North ? coordinate - 1 : coordinate + 1;
             }
             
-            return currentDirection == Direction.North ? coordinate - 1 : coordinate + 1;
+            return currentDirection == Direction.North ? coordinate + 1 : coordinate - 1;
         }
     }
 }
