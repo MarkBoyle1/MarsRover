@@ -51,7 +51,7 @@ namespace MarsRover.Tests
             string actualResult = command.Instruction.ToString();
 
             string expectResult = "MoveBack";
-            
+
             Assert.Equal(expectResult, actualResult);
         }
     }

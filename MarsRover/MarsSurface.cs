@@ -10,7 +10,7 @@ namespace MarsRover
 
         public string GetPoint(Coordinate coordinate)
         {
-            return Surface[coordinate.XCoordinate][coordinate.YCoordinate];
+            return Surface[coordinate.YCoordinate][coordinate.XCoordinate];
         }
     }
 }
