@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MarsRover
 {
-    public class MarsSurfaceBuilder
+    public class MarsSurfaceBuilder : IMarsSurfaceBuilder
     {
         private const string RoverNorthFacing = "^";
         private const string RoverEastFacing = ">";
@@ -13,11 +13,16 @@ namespace MarsRover
         private const string Obstacle = "x";
         private const string FreeSpace = ".";
         private const int SizeOfGrid = 20;
-        private const int Percentage = 10;
+        private const int PercentageOfObstacles = 10;
+        private List<Coordinate> ObstacleList; 
         private Random random = new Random();
 
+        public MarsSurfaceBuilder(List<Coordinate> obstacleList)
+        {
+            ObstacleList = obstacleList;
+        }
 
-        public MarsSurface CreateSurface(List<Coordinate> obstacleList)
+        public MarsSurface CreateSurface()
         {
             string[][] surface = new string[SizeOfGrid][];
             surface = surface.Select
@@ -26,12 +31,12 @@ namespace MarsRover
                 )
                 .ToArray();
 
-            if (obstacleList.Count == 0)
+            if (ObstacleList.Count == 0)
             {
-                obstacleList = GenerateRandomObstacles();
+                ObstacleList = GenerateRandomObstacles();
             }
 
-            surface = AddObstacles(surface, obstacleList);
+            surface = AddObstacles(surface, ObstacleList);
 
             return new MarsSurface(surface);
         }
@@ -39,9 +44,9 @@ namespace MarsRover
         private List<Coordinate> GenerateRandomObstacles()
         {
             List<Coordinate> randomObstacles = new List<Coordinate>();
-            int percentageOfGrid = SizeOfGrid * SizeOfGrid / Percentage;
+            int numberOfObstacles = SizeOfGrid * SizeOfGrid / PercentageOfObstacles;
 
-            for (int i = 0; i < percentageOfGrid; i++)
+            for (int i = 0; i < numberOfObstacles; i++)
             {
                 int xCoordinate = random.Next(0, SizeOfGrid);
                 int yCoordinate = random.Next(0, SizeOfGrid);

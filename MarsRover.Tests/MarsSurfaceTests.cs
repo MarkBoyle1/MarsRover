@@ -5,14 +5,16 @@ namespace MarsRover.Tests
 {
     public class MarsSurfaceTests
     {
-        private MarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder();
+        private IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>());
         private InputProcessor _inputProcessor = new InputProcessor();
         
         [Fact]
         public void given_sizeOfGridEqualsTen_and_ObstaclesEqualsOneOne_when_CreateSurface_then_CoordinateOneOne_returns_x()
         {
             Coordinate obstacle1 = new Coordinate(1, 1);
-            MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface(new List<Coordinate>(){obstacle1});
+            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>(){obstacle1});
+
+            MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
 
             string surfaceTerrainAtOneOne = marsSurface.GetPoint(obstacle1);
             
@@ -24,7 +26,9 @@ namespace MarsRover.Tests
         {
             Coordinate coordinate = new Coordinate(1, 1);
             RoverLocation startingPoint = new RoverLocation(coordinate, Direction.North);
-            MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface(new List<Coordinate>());
+            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>());
+
+            MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
             marsSurface = _marsSurfaceBuilder.PlaceRoverOnStartingPoint(marsSurface, startingPoint);
 
             string surfaceTerrainAtOneOne = marsSurface.GetPoint(startingPoint.Coordinate);
@@ -37,7 +41,9 @@ namespace MarsRover.Tests
         {
             Coordinate coordinate = new Coordinate(1, 1);
             RoverLocation startingPoint = new RoverLocation(coordinate, Direction.East);
-            MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface(new List<Coordinate>());
+            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>());
+
+            MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
             marsSurface = _marsSurfaceBuilder.PlaceRoverOnStartingPoint(marsSurface, startingPoint);
 
             string surfaceTerrainAtOneOne = marsSurface.GetPoint(startingPoint.Coordinate);
@@ -50,7 +56,9 @@ namespace MarsRover.Tests
         {
             Coordinate coordinate = new Coordinate(1, 1);
             RoverLocation startingPoint = new RoverLocation(coordinate, Direction.East);
-            MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface(new List<Coordinate>());
+            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>());
+
+            MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
             marsSurface = _marsSurfaceBuilder.PlaceRoverOnStartingPoint(marsSurface, startingPoint);
 
             RoverBehaviour _roverBehaviour = new RoverBehaviour();
@@ -74,7 +82,9 @@ namespace MarsRover.Tests
         {
             string[] obstacles = new[] {"1,1", "1,4", "0,8"};
             List<Coordinate> obstacleCoordinates = _inputProcessor.TurnObstacleInputsIntoCoordinates(obstacles);
-            MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface(obstacleCoordinates);
+            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(obstacleCoordinates);
+
+            MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
 
             string obstacle1 = marsSurface.GetPoint(obstacleCoordinates[0]);
             string obstacle2 = marsSurface.GetPoint(obstacleCoordinates[1]);
@@ -92,7 +102,9 @@ namespace MarsRover.Tests
         {
             string[] obstacles = new[] {"1,1", "1,4", "0,8"};
             List<Coordinate> obstacleCoordinates = _inputProcessor.TurnObstacleInputsIntoCoordinates(obstacles);
-            MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface(obstacleCoordinates);
+            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(obstacleCoordinates);
+
+            MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
 
             string obstacle1 = marsSurface.GetPoint(obstacleCoordinates[0]);
             string obstacle2 = marsSurface.GetPoint(obstacleCoordinates[1]);
@@ -102,7 +114,30 @@ namespace MarsRover.Tests
             Assert.Equal("x", obstacle1);
             Assert.Equal("x", obstacle2);
             Assert.Equal("x", obstacle3);
+        }
 
+        [Fact]
+        public void CreateSurfaceForMapping()
+        {
+            IMarsSurfaceBuilder _mappingBuilder = new MappingSurfaceBuilder(20);
+            RoverLocation startingPoint = new RoverLocation(new Coordinate(1, 1), Direction.North);
+
+            MarsSurface surface = _mappingBuilder.CreateSurface();
+            surface = _mappingBuilder.PlaceRoverOnStartingPoint(surface, startingPoint);
+            
+            Assert.Equal(" ", surface.GetPoint(new Coordinate(1,2 )));
+        }
+        
+        [Fact]
+        public void RevealSpaceInFrontOfRover()
+        {
+            IMarsSurfaceBuilder _mappingBuilder = new MappingSurfaceBuilder(20);
+            RoverLocation startingPoint = new RoverLocation(new Coordinate(1, 1), Direction.North);
+
+            MarsSurface surface = _mappingBuilder.CreateSurface();
+            surface = _mappingBuilder.PlaceRoverOnStartingPoint(surface, startingPoint);
+            
+            Assert.Equal(" ", surface.GetPoint(new Coordinate(1,2 )));
         }
     }
 }

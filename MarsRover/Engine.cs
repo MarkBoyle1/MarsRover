@@ -4,7 +4,7 @@ namespace MarsRover
 {
     public class Engine
     {
-        private MarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder();
+        private IMarsSurfaceBuilder _marsSurfaceBuilder;
         private InputProcessor _inputProcessor = new InputProcessor();
         private RoverBehaviour _roverBehaviour = new RoverBehaviour();
         private Validations _validations = new Validations();
@@ -14,8 +14,11 @@ namespace MarsRover
             RoverLocation roverLocation = _inputProcessor.DetermineStartingLocation(startingLocation);
             List<Coordinate> obstacleCoordinates = _inputProcessor.TurnObstacleInputsIntoCoordinates(obstacles);
             List<Command> commandList = _inputProcessor.GetListOfCommands(commands);
+            _marsSurfaceBuilder = new MarsSurfaceBuilder(obstacleCoordinates);
+            // _marsSurfaceBuilder = new MappingSurfaceBuilder(20);
 
-            MarsSurface surface = _marsSurfaceBuilder.CreateSurface(obstacleCoordinates);
+
+            MarsSurface surface = _marsSurfaceBuilder.CreateSurface();
             surface = _marsSurfaceBuilder.PlaceRoverOnStartingPoint(surface, roverLocation);
             _output.DisplaySurface(surface);
             
