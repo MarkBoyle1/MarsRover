@@ -25,7 +25,7 @@ namespace MarsRover.Behaviours
                 newCoordinate = MoveRover(location.Coordinate, directionFacing, RoverInstruction.MoveBack);
             }
             
-            return new RoverLocation(newCoordinate.XCoordinate, newCoordinate.YCoordinate, directionFacing);
+            return new RoverLocation(newCoordinate, directionFacing);
         }
         
         private Coordinate MoveRover(Coordinate coordinate, Direction currentDirection, RoverInstruction instruction)

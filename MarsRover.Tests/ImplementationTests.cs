@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -11,7 +12,7 @@ namespace MarsRover.Tests
         {
             string[] startingPoint = new[] {"1", "1", "N"};
             string[] commands = new[] {"r", "f", "r", "f", "f"};
-            List<Coordinate> obstacles = new List<Coordinate>();
+            string[] obstacles = new []{"8,8"};
 
             RoverLocation roverLocation = _engine.RunProgram(startingPoint, commands, obstacles);
             
@@ -25,8 +26,7 @@ namespace MarsRover.Tests
         {
             string[] startingPoint = new[] {"1", "1", "N"};
             string[] commands = new[] {"r", "f", "r", "f", "f"};
-            Coordinate obstacle1 = new Coordinate(2, 2);
-            List<Coordinate> obstacles = new List<Coordinate>(){obstacle1};
+            string[] obstacles = new[] {"2,2"};
             
             RoverLocation roverLocation = _engine.RunProgram(startingPoint, commands, obstacles);
             
@@ -40,8 +40,7 @@ namespace MarsRover.Tests
         {
             string[] startingPoint = new[] {"0", "0", "N"};
             string[] commands = new[] {"f"};
-            
-            List<Coordinate> obstacles = new List<Coordinate>();
+            string[] obstacles = new []{"8,8"};
             
             RoverLocation roverLocation = _engine.RunProgram(startingPoint, commands, obstacles);
             
@@ -55,8 +54,7 @@ namespace MarsRover.Tests
         {
             string[] startingPoint = new[] {"0", "9", "S"};
             string[] commands = new[] {"f"};
-            
-            List<Coordinate> obstacles = new List<Coordinate>();
+            string[] obstacles = new[] {"8,8"};
             
             RoverLocation roverLocation = _engine.RunProgram(startingPoint, commands, obstacles);
             
@@ -70,8 +68,7 @@ namespace MarsRover.Tests
         {
             string[] startingPoint = new[] {"9", "9", "E"};
             string[] commands = new[] {"f"};
-            
-            List<Coordinate> obstacles = new List<Coordinate>();
+            string[] obstacles = Array.Empty<string>();
             
             RoverLocation roverLocation = _engine.RunProgram(startingPoint, commands, obstacles);
             

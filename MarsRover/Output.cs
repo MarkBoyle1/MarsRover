@@ -16,9 +16,6 @@ namespace MarsRover
             
             for(int row = 0; row < 10; row++)
             {
-                
-                // Console.WriteLine(String.Join(',', surface.Surface[row]).Replace(',', ' '));
-
                 foreach (var point in surface.Surface[row])
                 {
                     if (point == "x")

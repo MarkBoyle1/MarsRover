@@ -11,9 +11,10 @@ namespace MarsRover.Tests
         [Fact]
         public void given_obstacleAtOneTwo_and_RoverLocationAtOneTwo_when_LocationContainsObstacle_then_return_true()
         {
-            RoverLocation roverLocation = new RoverLocation(1, 2, Direction.East);
+            Coordinate coordinate = new Coordinate(1, 2);
+            RoverLocation roverLocation = new RoverLocation(coordinate, Direction.East);
             Coordinate obstacle1 = new Coordinate(1, 2);
-            MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface(10, new List<Coordinate>() {obstacle1});
+            MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface(new List<Coordinate>() {obstacle1});
 
             bool isObstacle = _validations.LocationContainsObstacle(marsSurface, roverLocation);
             

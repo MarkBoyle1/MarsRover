@@ -9,15 +9,16 @@ namespace MarsRover
         private RoverBehaviour _roverBehaviour = new RoverBehaviour();
         private Validations _validations = new Validations();
         private Output _output = new Output();
-        public RoverLocation RunProgram(string[] startingLocation, string[] commands, List<Coordinate> obstacles)
+        public RoverLocation RunProgram(string[] startingLocation, string[] commands, string[] obstacles)
         {
             RoverLocation roverLocation = _inputProcessor.DetermineStartingLocation(startingLocation);
-            
-            MarsSurface surface = _marsSurfaceBuilder.CreateSurface(10, obstacles);
+            List<Coordinate> obstacleCoordinates = _inputProcessor.TurnObstacleInputsIntoCoordinates(obstacles);
+            List<Command> commandList = _inputProcessor.GetListOfCommands(commands);
+
+            MarsSurface surface = _marsSurfaceBuilder.CreateSurface(obstacleCoordinates);
             surface = _marsSurfaceBuilder.PlaceRoverOnStartingPoint(surface, roverLocation);
             _output.DisplaySurface(surface);
             
-            List<Command> commandList = _inputProcessor.GetListOfCommands(commands);
             roverLocation = ExecuteCommands(surface, roverLocation, commandList);
 
             return roverLocation;

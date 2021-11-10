@@ -12,19 +12,46 @@ namespace MarsRover
         private const string RoverWestFacing = "<";
         private const string Obstacle = "x";
         private const string FreeSpace = ".";
+        private const int SizeOfGrid = 20;
+        private const int Percentage = 10;
+        private Random random = new Random();
 
-        public MarsSurface CreateSurface(int sizeOfGrid, List<Coordinate> obstacleList)
+
+        public MarsSurface CreateSurface(List<Coordinate> obstacleList)
         {
-            string[][] surface = new string[sizeOfGrid][];
+            string[][] surface = new string[SizeOfGrid][];
             surface = surface.Select
                 (
-                    x => new string[sizeOfGrid].Select(x => FreeSpace).ToArray()
+                    x => new string[SizeOfGrid].Select(x => FreeSpace).ToArray()
                 )
                 .ToArray();
+
+            if (obstacleList.Count == 0)
+            {
+                obstacleList = GenerateRandomObstacles();
+            }
 
             surface = AddObstacles(surface, obstacleList);
 
             return new MarsSurface(surface);
+        }
+
+        private List<Coordinate> GenerateRandomObstacles()
+        {
+            List<Coordinate> randomObstacles = new List<Coordinate>();
+            int percentageOfGrid = SizeOfGrid * SizeOfGrid / Percentage;
+
+            for (int i = 0; i < percentageOfGrid; i++)
+            {
+                int xCoordinate = random.Next(0, SizeOfGrid);
+                int yCoordinate = random.Next(0, SizeOfGrid);
+
+                Coordinate obstacle = new Coordinate(xCoordinate, yCoordinate);
+                
+                randomObstacles.Add(obstacle);
+            }
+
+            return randomObstacles;
         }
 
         private string[][] AddObstacles(string[][] surface, List<Coordinate> obstacleList)

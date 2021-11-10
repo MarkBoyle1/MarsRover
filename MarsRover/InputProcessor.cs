@@ -52,9 +52,10 @@ namespace MarsRover
         {
             int xCoordinate = Convert.ToInt32(startingLocation[0]);
             int yCoordinate = Convert.ToInt32(startingLocation[1]);
+            Coordinate coordinate = new Coordinate(xCoordinate, yCoordinate);
             Direction directionfacing = DetermineDirection(startingLocation[2]);
 
-            return new RoverLocation(xCoordinate, yCoordinate, directionfacing);
+            return new RoverLocation(coordinate, directionfacing);
         }
 
         private Direction DetermineDirection(string direction)
@@ -72,6 +73,21 @@ namespace MarsRover
                 default:
                     throw new Exception();
             }
+        }
+
+        public List<Coordinate> TurnObstacleInputsIntoCoordinates(string[] obstacles)
+        {
+            List<Coordinate> obstacleCoordinates = new List<Coordinate>();
+            
+            foreach (var obstacle in obstacles)
+            {
+                string[] splitInput = obstacle.Split(',');
+                Coordinate coordinate = new Coordinate(Convert.ToInt32(splitInput[0]), Convert.ToInt32(splitInput[1]));
+                
+                obstacleCoordinates.Add(coordinate);
+            }
+
+            return obstacleCoordinates;
         }
     }
 }

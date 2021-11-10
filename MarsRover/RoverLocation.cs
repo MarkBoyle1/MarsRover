@@ -5,9 +5,9 @@ namespace MarsRover
         public Coordinate Coordinate { get; }
         public Direction DirectionFacing { get; }
 
-        public RoverLocation(int xCoordinate, int yCoordinate, Direction directionFacing)
+        public RoverLocation(Coordinate coordinate, Direction directionFacing)
         {
-            Coordinate = new Coordinate(xCoordinate, yCoordinate);
+            Coordinate = coordinate;
             DirectionFacing = directionFacing;
         }
     }
