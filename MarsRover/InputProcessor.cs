@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using MarsRover.Objectives;
 
 namespace MarsRover
 {
@@ -13,10 +15,38 @@ namespace MarsRover
         public const string East = "E";
         public const string South = "S";
         public const string West = "W";
+        private string[] DefaultCommands = new string[] {"r", "f", "f", "r", "f", "f", "l", "b"};
 
-        public List<Command> GetListOfCommands(string[] commands)
+        public RoverSettings GetRoverSettings(string[] args)
+        {
+            RoverLocation roverLocation = DetermineStartingLocation(args);
+            List<Command> commands = GetListOfCommands(args);
+            IObjective objective = DetermineObjective(args, commands);
+
+            return new RoverSettings(roverLocation, commands, objective);
+        }
+
+        public PlanetSettings GetPlanetSettings(string[] args)
+        {
+            List<Coordinate> obstacles = TurnObstacleInputsIntoCoordinates(args);
+            int sizeOfGrid = GetSizeOfGrid(args);
+            IMarsSurfaceBuilder marsSurfaceBuilder = GetTypeOfBuilder(args, sizeOfGrid, obstacles);
+
+            return new PlanetSettings(sizeOfGrid, obstacles, marsSurfaceBuilder);
+        }
+
+        public List<Command> GetListOfCommands(string[] args)
         {
             List<Command> commandList = new List<Command>();
+            string[] commands = DefaultCommands;
+
+            foreach (var argument in args)
+            {
+                if (argument.StartsWith("commands:"))
+                {
+                    commands = argument.Remove(0,9).Split(',', StringSplitOptions.RemoveEmptyEntries);
+                }
+            }
             
             foreach (var command in commands)
             {
@@ -48,12 +78,24 @@ namespace MarsRover
             }
         }
 
-        public RoverLocation DetermineStartingLocation(string[] startingLocation)
+        public RoverLocation DetermineStartingLocation(string[] args)
         {
-            int xCoordinate = Convert.ToInt32(startingLocation[0]);
-            int yCoordinate = Convert.ToInt32(startingLocation[1]);
-            Coordinate coordinate = new Coordinate(xCoordinate, yCoordinate);
-            Direction directionfacing = DetermineDirection(startingLocation[2]);
+            Coordinate coordinate = new Coordinate(1, 1);
+            Direction directionfacing = Direction.North;
+            
+            foreach (var argument in args)
+            {
+                if (argument.StartsWith("location:"))
+                {
+                    string[] startingLocation = argument.Remove(0, 9).Split(',', StringSplitOptions.RemoveEmptyEntries).ToArray();
+                    
+                    int xCoordinate = Convert.ToInt32(startingLocation[0]);
+                    int yCoordinate = Convert.ToInt32(startingLocation[1]);
+                    coordinate = new Coordinate(xCoordinate, yCoordinate);
+                    directionfacing = DetermineDirection(startingLocation[2]);
+                }
+                
+            }
 
             return new RoverLocation(coordinate, directionfacing);
         }
@@ -75,9 +117,18 @@ namespace MarsRover
             }
         }
 
-        public List<Coordinate> TurnObstacleInputsIntoCoordinates(string[] obstacles)
+        public List<Coordinate> TurnObstacleInputsIntoCoordinates(string[] args)
         {
             List<Coordinate> obstacleCoordinates = new List<Coordinate>();
+            string[] obstacles = Array.Empty<string>();
+            
+            foreach (var argument in args)
+            {
+                if (argument.StartsWith("obstacles:"))
+                {
+                    obstacles = argument.Remove(0,10).Split(';', StringSplitOptions.RemoveEmptyEntries);
+                }
+            }
             
             foreach (var obstacle in obstacles)
             {
@@ -88,6 +139,42 @@ namespace MarsRover
             }
 
             return obstacleCoordinates;
+        }
+
+        private IObjective DetermineObjective(string[] args, List<Command> commands)
+        {
+            foreach (var argument in args)
+            {
+                if (argument == "map")
+                {
+                    return new MapSurface();
+                }
+
+                if (argument == "explore")
+                {
+                    return new FollowCommands(commands);
+                }
+            }
+
+            return new MapSurface();
+        }
+
+        private int GetSizeOfGrid(string[] args)
+        {
+            return 20;
+        }
+
+        private IMarsSurfaceBuilder GetTypeOfBuilder(string[] args, int sizeOfGrid, List<Coordinate> obstacles)
+        {
+            foreach (var argument in args)
+            {
+                if (argument == "map")
+                {
+                    return new MappingSurfaceBuilder(sizeOfGrid);
+                }
+            }
+
+            return new MarsSurfaceBuilder(obstacles);
         }
     }
 }

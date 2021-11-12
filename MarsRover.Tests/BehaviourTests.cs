@@ -85,5 +85,11 @@ namespace MarsRover.Tests
             
             Assert.Equal(expectResult, actualResult);
         }
+
+        [Fact]
+        public void rover_avoids_obstacle()
+        {
+            
+        }
     }
 }

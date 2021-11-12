@@ -46,10 +46,16 @@ namespace MarsRover
             surface.Surface[newLocation.Coordinate.YCoordinate][newLocation.Coordinate.XCoordinate] = DetermineDirectionOfRover(newLocation.DirectionFacing);
 
             Coordinate coordinateOfSpaceInFrontOfRover = DetermineCoordinateOfSpaceInFrontOfRover(surface, newLocation);
-            string revealedSpace = RevealSpaceInFrontOfRover(surface, coordinateOfSpaceInFrontOfRover);
 
-            surface.Surface[coordinateOfSpaceInFrontOfRover.YCoordinate][coordinateOfSpaceInFrontOfRover.XCoordinate] =
-                revealedSpace;
+            if (surface.Surface[coordinateOfSpaceInFrontOfRover.YCoordinate][
+                coordinateOfSpaceInFrontOfRover.XCoordinate] == " ")
+            {
+                string revealedSpace = RevealSpaceInFrontOfRover(surface, coordinateOfSpaceInFrontOfRover);
+
+                surface.Surface[coordinateOfSpaceInFrontOfRover.YCoordinate][coordinateOfSpaceInFrontOfRover.XCoordinate] =
+                    revealedSpace;
+            }
+            
             return surface;
         }
 
@@ -89,7 +95,7 @@ namespace MarsRover
             if (revealedSpace == " ")
             {
                 int randomNumber = random.Next(1, 11);
-                return randomNumber > 3 ? FreeSpace : Obstacle;
+                return randomNumber > 2 ? FreeSpace : Obstacle;
             }
             
             return revealedSpace;

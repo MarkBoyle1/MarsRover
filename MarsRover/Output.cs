@@ -8,13 +8,13 @@ namespace MarsRover
     {
         public void DisplaySurface(MarsSurface surface)
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             Console.Clear();
             // Console.BackgroundColor = ConsoleColor.DarkRed;
             Console.ForegroundColor = ConsoleColor.White;
             // Console.Beep();
             
-            for(int row = 0; row < 10; row++)
+            for(int row = 0; row < 20; row++)
             {
                 foreach (var point in surface.Surface[row])
                 {

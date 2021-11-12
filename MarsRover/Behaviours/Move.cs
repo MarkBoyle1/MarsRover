@@ -2,7 +2,7 @@ namespace MarsRover.Behaviours
 {
     public class Move : IBehaviour
     {
-        private int sizeOfGrid = 10;
+        private int sizeOfGrid = 20;
         private RoverInstruction _instruction;
 
         public Move(RoverInstruction instruction)

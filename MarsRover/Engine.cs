@@ -1,4 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using MarsRover.Objectives;
+using Microsoft.VisualBasic;
 
 namespace MarsRover
 {
@@ -9,45 +13,51 @@ namespace MarsRover
         private RoverBehaviour _roverBehaviour = new RoverBehaviour();
         private Validations _validations = new Validations();
         private Output _output = new Output();
-        public RoverLocation RunProgram(string[] startingLocation, string[] commands, string[] obstacles)
+        private IObjective _objective;
+        
+        public RoverLocation RunProgram(string[] args)
         {
-            RoverLocation roverLocation = _inputProcessor.DetermineStartingLocation(startingLocation);
-            List<Coordinate> obstacleCoordinates = _inputProcessor.TurnObstacleInputsIntoCoordinates(obstacles);
-            List<Command> commandList = _inputProcessor.GetListOfCommands(commands);
-            _marsSurfaceBuilder = new MarsSurfaceBuilder(obstacleCoordinates);
-            // _marsSurfaceBuilder = new MappingSurfaceBuilder(20);
+            RoverSettings roverSettings = _inputProcessor.GetRoverSettings(args);
+            PlanetSettings planetSettings = _inputProcessor.GetPlanetSettings(args);
+            
+            _objective = roverSettings.Objective;
+            RoverLocation roverLocation = roverSettings.RoverLocation;
+            _marsSurfaceBuilder = planetSettings.MarsSurfaceBuilder;
 
 
             MarsSurface surface = _marsSurfaceBuilder.CreateSurface();
             surface = _marsSurfaceBuilder.PlaceRoverOnStartingPoint(surface, roverLocation);
             _output.DisplaySurface(surface);
-            
-            roverLocation = ExecuteCommands(surface, roverLocation, commandList);
 
-            return roverLocation;
+            RoverLocation finalDestination = ActivateRover(surface, roverLocation);
+
+            return finalDestination;
         }
 
-        private RoverLocation ExecuteCommands(MarsSurface surface, RoverLocation roverLocation, List<Command> commandList)
+        public RoverLocation ActivateRover(MarsSurface surface, RoverLocation roverLocation)
         {
-            RoverLocation updatedLocation = roverLocation;
-            
-            foreach (var command in commandList)
+            Command command = _objective.ReceiveCommand(surface, roverLocation);
+
+            while (command.Instruction != RoverInstruction.Stop)
             {
-                RoverLocation oldLocation = updatedLocation;
+                RoverLocation oldLocation = roverLocation;
+                RoverLocation newLocation = _roverBehaviour.ExecuteCommand(roverLocation, command);
                 
-                RoverLocation newLocation = _roverBehaviour.ExecuteCommand(updatedLocation, command);
-                if (_validations.LocationContainsObstacle(surface, newLocation))
+                if(_validations.LocationContainsObstacle(surface, newLocation))
                 {
                     _output.DisplayMessage(OutputMessages.ObstacleFound);
-                    return updatedLocation;
+                    command = _objective.ReceiveCommandForObstacle();
+                    newLocation = _roverBehaviour.ExecuteCommand(roverLocation, command);
                 }
 
-                updatedLocation = newLocation;
+                roverLocation = newLocation;
                 surface = _marsSurfaceBuilder.UpdateRoverMovement(surface, oldLocation, newLocation);
                 _output.DisplaySurface(surface);
+                
+                command = _objective.ReceiveCommand(surface, roverLocation);
             }
 
-            return updatedLocation;
+            return roverLocation;
         }
     }
 }
