@@ -6,12 +6,6 @@ namespace MarsRover
 {
     public class MarsSurfaceBuilder : IMarsSurfaceBuilder
     {
-        private const string RoverNorthFacing = "^";
-        private const string RoverEastFacing = ">";
-        private const string RoverSouthFacing = "v";
-        private const string RoverWestFacing = "<";
-        private const string Obstacle = "x";
-        private const string FreeSpace = ".";
         private const int SizeOfGrid = 20;
         private const int PercentageOfObstacles = 10;
         private List<Coordinate> ObstacleList; 
@@ -27,7 +21,7 @@ namespace MarsRover
             string[][] surface = new string[SizeOfGrid][];
             surface = surface.Select
                 (
-                    x => new string[SizeOfGrid].Select(x => FreeSpace).ToArray()
+                    x => new string[SizeOfGrid].Select(x => DisplaySymbol.FreeSpace).ToArray()
                 )
                 .ToArray();
 
@@ -65,44 +59,28 @@ namespace MarsRover
             
             foreach (var obstacle in obstacleList)
             {
-                updatedSurface[obstacle.YCoordinate][obstacle.XCoordinate] = Obstacle;
+                updatedSurface[obstacle.YCoordinate][obstacle.XCoordinate] = DisplaySymbol.Obstacle;
             }
 
             return updatedSurface;
         }
         
-        public MarsSurface PlaceRoverOnStartingPoint(MarsSurface surface, RoverLocation startingPoint)
+        public MarsSurface UpdateSurface(MarsSurface surface, Coordinate location, string symbol)
         {
-            string rover = DetermineDirectionOfRover(startingPoint.DirectionFacing);
-
-            surface.Surface[startingPoint.Coordinate.YCoordinate][startingPoint.Coordinate.XCoordinate] = rover;
-
-            return surface;
-        }
-
-        public MarsSurface UpdateRoverMovement(MarsSurface surface, RoverLocation oldLocation, RoverLocation newLocation)
-        {
-            surface.Surface[oldLocation.Coordinate.YCoordinate][oldLocation.Coordinate.XCoordinate] = FreeSpace;
-            surface.Surface[newLocation.Coordinate.YCoordinate][newLocation.Coordinate.XCoordinate] = DetermineDirectionOfRover(newLocation.DirectionFacing);
-
-            return surface;
-        }
-
-        private string DetermineDirectionOfRover(Direction direction)
-        {
-            switch (direction)
+            string[][] updatedSurface = new string[SizeOfGrid][];
+            updatedSurface = updatedSurface.Select(x => new string[SizeOfGrid]).ToArray();
+                
+            for(int x = 0; x < SizeOfGrid; x++)
             {
-                case Direction.North:
-                    return RoverNorthFacing;
-                case Direction.East:
-                    return RoverEastFacing;
-                case Direction.South:
-                    return RoverSouthFacing;
-                case Direction.West:
-                    return RoverWestFacing;
-                default:
-                    throw new Exception();
+                for (int y = 0; y < SizeOfGrid; y++)
+                {
+                    updatedSurface[y][x] = surface.GetPoint(new Coordinate(x,y));
+                }
             }
+
+            updatedSurface[location.YCoordinate][location.XCoordinate] = symbol;
+            
+            return new MarsSurface(updatedSurface);
         }
     }
 }

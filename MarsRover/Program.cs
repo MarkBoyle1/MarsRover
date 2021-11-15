@@ -1,5 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+using System;
+using System.Text;
+using Microsoft.VisualBasic;
 
 namespace MarsRover
 {
@@ -7,23 +9,13 @@ namespace MarsRover
     {
         static void Main(string[] args)
         {
-            Engine _engine = new Engine();
-            string[] startingPoint;
+            InputProcessor _inputProcessor = new InputProcessor();
             
-            if (args.Length == 3)
-            {
-                startingPoint = args;
-            }
-            else
-            {
-                startingPoint = new[] {"1", "1", "N"};
-            }
+            RoverSettings roverSettings = _inputProcessor.GetRoverSettings(args);
+            PlanetSettings planetSettings = _inputProcessor.GetPlanetSettings(args);
+            Engine engine = new Engine(roverSettings, planetSettings);
             
-            
-            string[] commands = new[] {"r", "f", "f", "r", "f", "f", "l", "b"};
-            string[] obstacles = Array.Empty<string>();
-
-            RoverLocation roverLocation = _engine.RunProgram(startingPoint, commands, obstacles);
+            engine.RunProgram();
         }
     }
 }

@@ -1,25 +1,21 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace MarsRover
 {
-    public class MappingSurfaceBuilder : IMarsSurfaceBuilder
+    public class TestMarsSurfaceBuilder : IMarsSurfaceBuilder
     {
-        private int SizeOfGrid;
-        public MappingSurfaceBuilder(int sizeOfGrid)
-        {
-            SizeOfGrid = sizeOfGrid;
-        }
+        private int SizeOfGrid = 20;
         public MarsSurface CreateSurface()
         {
-            string[][] surface = new string[SizeOfGrid][];
+            string[][] surface = new string[4][];
             surface = surface.Select
                 (
-                    x => new string[SizeOfGrid].Select(x => DisplaySymbol.UnknownSpace).ToArray()
+                    x => new string[4].Select(x => DisplaySymbol.FreeSpace).ToArray()
                 )
                 .ToArray();
 
+            surface[2][3] = DisplaySymbol.Obstacle;
             return new MarsSurface(surface);
         }
         
@@ -28,11 +24,11 @@ namespace MarsRover
             string[][] updatedSurface = new string[SizeOfGrid][];
             updatedSurface = updatedSurface.Select(x => new string[SizeOfGrid]).ToArray();
                 
-            for(int x = 0; x < SizeOfGrid; x++)
+            for(int i = 0; i < SizeOfGrid; i++)
             {
-                for (int y = 0; y < SizeOfGrid; y++)
+                for (int j = 0; j < SizeOfGrid; j++)
                 {
-                    updatedSurface[y][x] = surface.GetPoint(new Coordinate(x,y));
+                    updatedSurface[i][j] = surface.GetPoint(new Coordinate(i,j));
                 }
             }
 
