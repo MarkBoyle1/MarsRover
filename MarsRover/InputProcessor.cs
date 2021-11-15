@@ -154,6 +154,11 @@ namespace MarsRover
                 {
                     return new FollowCommands(commands);
                 }
+                
+                if (argument == "destroyer")
+                {
+                    return new Destroyer();
+                }
             }
 
             return new MapSurface();

@@ -6,6 +6,7 @@ namespace MarsRover
         TurnRight,
         MoveForward,
         MoveBack,
-        Stop
+        Stop,
+        ShootLaser
     }
 }
