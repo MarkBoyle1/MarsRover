@@ -16,7 +16,7 @@ namespace MarsRover
                 .ToArray();
 
             surface[2][3] = DisplaySymbol.Obstacle;
-            return new MarsSurface(surface);
+            return new MarsSurface(surface, 1);
         }
         
         public MarsSurface UpdateSurface(MarsSurface surface, Coordinate location, string symbol)
@@ -34,7 +34,7 @@ namespace MarsRover
 
             updatedSurface[location.YCoordinate][location.XCoordinate] = symbol;
             
-            return new MarsSurface(updatedSurface);
+            return new MarsSurface(updatedSurface, 1);
         }
     }
 }

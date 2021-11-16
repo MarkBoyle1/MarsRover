@@ -12,10 +12,8 @@ namespace MarsRover
         {
             Console.OutputEncoding = Encoding.UTF8;
             Console.Clear();
-            // Console.BackgroundColor = ConsoleColor.DarkRed;
             Console.ForegroundColor = ConsoleColor.White;
-            // Console.Beep();
-            
+
             for(int row = 0; row < 20; row++)
             {
                 foreach (var point in surface.Surface[row])
@@ -48,7 +46,6 @@ namespace MarsRover
             }
             Thread.Sleep(threadSpeed);
             Console.Clear();
-
         }
 
         public void DisplayMessage(string message)
