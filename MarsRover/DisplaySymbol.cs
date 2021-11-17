@@ -1,6 +1,6 @@
 namespace MarsRover
 {
-    public static class DisplaySymbol
+    public class DisplaySymbol
     {
         public const string RoverNorthFacing = "^";
         public const string RoverEastFacing = ">";

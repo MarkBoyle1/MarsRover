@@ -28,7 +28,7 @@ namespace MarsRover.Tests
             MarsSurface surface = _marsSurfaceBuilder.CreateSurface();
             surface = _marsSurfaceBuilder.UpdateSurface(surface, new Coordinate(1,1), ">");
             
-            surface = _engine.FireGun(surface, _defaultLocation);
+            surface = _engine.FireGun(surface, _defaultLocation.Coordinate, _defaultLocation.DirectionFacing);
             
             Assert.Equal(DisplaySymbol.FreeSpace, surface.GetPoint(new Coordinate(1,5)));
             Assert.Equal(DisplaySymbol.RoverEastFacing, surface.GetPoint(new Coordinate(1,1)));
