@@ -45,7 +45,6 @@ namespace MarsRover
                 Console.WriteLine();
             }
             Thread.Sleep(threadSpeed);
-            Console.Clear();
         }
 
         public void DisplayMessage(string message)
@@ -56,6 +55,14 @@ namespace MarsRover
         private ConsoleColor SwapExplosionColour(ConsoleColor currentColour)
         {
             return currentColour == ConsoleColor.Yellow ? ConsoleColor.Red : ConsoleColor.Yellow;
+        }
+
+        public void DisplayReport(Report report)
+        {
+            Console.WriteLine(OutputMessages.MissionComplete);
+            Console.WriteLine(OutputMessages.DistanceTravelled + report.DistanceTravelled);
+            Console.WriteLine(OutputMessages.ObstaclesDiscovered + report.ObstaclesDiscovered);
+            Console.WriteLine(OutputMessages.ObstaclesDestroyed + report.ObstaclesDestroyed);
         }
     }
 }

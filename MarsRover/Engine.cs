@@ -43,6 +43,8 @@ namespace MarsRover
 
             Report report =
                 _reportBuilder.CreateReport(_distancedTravelled, _initialSurface, _finalSurface, finalDestination);
+
+            _output.DisplayReport(report);
             
             return report;
         }
