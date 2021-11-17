@@ -9,6 +9,7 @@ namespace MarsRover
     public class Engine
     {
         private IMarsSurfaceBuilder _marsSurfaceBuilder;
+        private ReportBuilder _reportBuilder = new ReportBuilder();
         private RoverBehaviour _roverBehaviour = new RoverBehaviour();
         private Validations _validations = new Validations();
         private Output _output = new Output();
@@ -18,7 +19,9 @@ namespace MarsRover
         private RoverSettings _roverSettings;
         private PlanetSettings _planetSettings;
         private MarsSurface _initialSurface;
-
+        private MarsSurface _finalSurface;
+        private int _distancedTravelled;
+        
         public Engine(RoverSettings roverSettings, PlanetSettings planetSettings)
         {
             _roverSettings = roverSettings;
@@ -27,7 +30,7 @@ namespace MarsRover
             _objective = _roverSettings.Objective;
         }
         
-        public RoverLocation RunProgram()
+        public Report RunProgram()
         {
             RoverLocation roverLocation = _roverSettings.RoverLocation;
             
@@ -38,7 +41,10 @@ namespace MarsRover
 
             RoverLocation finalDestination = ActivateRover(surface, roverLocation);
 
-            return finalDestination;
+            Report report =
+                _reportBuilder.CreateReport(_distancedTravelled, _initialSurface, _finalSurface, finalDestination);
+            
+            return report;
         }
 
         public RoverLocation ActivateRover(MarsSurface surface, RoverLocation roverLocation)
@@ -56,13 +62,23 @@ namespace MarsRover
                 else
                 {
                     RoverLocation newLocation = _roverBehaviour.ExecuteCommand(roverLocation, command);
-
-
+                    
                     if (_validations.LocationContainsObstacle(surface, newLocation))
                     {
                         _output.DisplayMessage(OutputMessages.ObstacleFound);
                         command = _objective.ReceiveCommandForObstacle();
+                        
+                        if (command.Instruction == RoverInstruction.Stop)
+                        {
+                            break;
+                        }
+                        
                         newLocation = _roverBehaviour.ExecuteCommand(roverLocation, command);
+                    }
+
+                    if (command.Instruction is RoverInstruction.MoveForward or RoverInstruction.MoveBack)
+                    {
+                        _distancedTravelled += 1;
                     }
 
                     roverLocation = newLocation;
@@ -79,6 +95,8 @@ namespace MarsRover
                 command = _objective.ReceiveCommand(surface, roverLocation);
             }
 
+            _finalSurface = surface;
+            
             return roverLocation;
         }
 
