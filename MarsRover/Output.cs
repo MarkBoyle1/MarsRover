@@ -12,10 +12,8 @@ namespace MarsRover
         {
             Console.OutputEncoding = Encoding.UTF8;
             Console.Clear();
-            // Console.BackgroundColor = ConsoleColor.DarkRed;
             Console.ForegroundColor = ConsoleColor.White;
-            // Console.Beep();
-            
+
             for(int row = 0; row < 20; row++)
             {
                 foreach (var point in surface.Surface[row])
@@ -47,8 +45,6 @@ namespace MarsRover
                 Console.WriteLine();
             }
             Thread.Sleep(threadSpeed);
-            Console.Clear();
-
         }
 
         public void DisplayMessage(string message)
@@ -59,6 +55,14 @@ namespace MarsRover
         private ConsoleColor SwapExplosionColour(ConsoleColor currentColour)
         {
             return currentColour == ConsoleColor.Yellow ? ConsoleColor.Red : ConsoleColor.Yellow;
+        }
+
+        public void DisplayReport(Report report)
+        {
+            Console.WriteLine(OutputMessages.MissionComplete);
+            Console.WriteLine(OutputMessages.DistanceTravelled + report.DistanceTravelled);
+            Console.WriteLine(OutputMessages.ObstaclesDiscovered + report.ObstaclesDiscovered);
+            Console.WriteLine(OutputMessages.ObstaclesDestroyed + report.ObstaclesDestroyed);
         }
     }
 }

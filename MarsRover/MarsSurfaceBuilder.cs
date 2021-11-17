@@ -32,7 +32,7 @@ namespace MarsRover
 
             surface = AddObstacles(surface, ObstacleList);
 
-            return new MarsSurface(surface);
+            return new MarsSurface(surface, ObstacleList.Count);
         }
 
         private List<Coordinate> GenerateRandomObstacles()
@@ -68,19 +68,22 @@ namespace MarsRover
         public MarsSurface UpdateSurface(MarsSurface surface, Coordinate location, string symbol)
         {
             string[][] updatedSurface = new string[SizeOfGrid][];
+            int obstacleCount = symbol == DisplaySymbol.Obstacle ? 1 : 0;
             updatedSurface = updatedSurface.Select(x => new string[SizeOfGrid]).ToArray();
                 
             for(int x = 0; x < SizeOfGrid; x++)
             {
                 for (int y = 0; y < SizeOfGrid; y++)
                 {
-                    updatedSurface[y][x] = surface.GetPoint(new Coordinate(x,y));
+                    string surfacePoint = surface.GetPoint(new Coordinate(x,y));
+                    updatedSurface[y][x] = surfacePoint;
+                    obstacleCount = surfacePoint == DisplaySymbol.Obstacle ? obstacleCount + 1 : obstacleCount;
                 }
             }
 
             updatedSurface[location.YCoordinate][location.XCoordinate] = symbol;
             
-            return new MarsSurface(updatedSurface);
+            return new MarsSurface(updatedSurface, obstacleCount);
         }
     }
 }

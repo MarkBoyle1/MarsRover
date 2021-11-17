@@ -40,11 +40,11 @@ namespace MarsRover.Tests
             PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);
             Engine _engine = new Engine(roverSettings, planetSettings);
             
-            RoverLocation roverLocation = _engine.RunProgram();
+            Report report = _engine.RunProgram();
             
-            Assert.Equal(2, roverLocation.Coordinate.XCoordinate);
-            Assert.Equal(1, roverLocation.Coordinate.YCoordinate);
-            Assert.Equal(Direction.South, roverLocation.DirectionFacing);
+            Assert.Equal(2, report.FinalLocation.Coordinate.XCoordinate);
+            Assert.Equal(1, report.FinalLocation.Coordinate.YCoordinate);
+            Assert.Equal(Direction.South, report.FinalLocation.DirectionFacing);
         }
         
         [Fact]
@@ -56,11 +56,11 @@ namespace MarsRover.Tests
             PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);
             Engine _engine = new Engine(roverSettings, planetSettings);
             
-            RoverLocation roverLocation = _engine.RunProgram();
+            Report report = _engine.RunProgram();
             
-            Assert.Equal(0, roverLocation.Coordinate.XCoordinate);
-            Assert.Equal(19, roverLocation.Coordinate.YCoordinate);
-            Assert.Equal(Direction.North, roverLocation.DirectionFacing);
+            Assert.Equal(0, report.FinalLocation.Coordinate.XCoordinate);
+            Assert.Equal(19, report.FinalLocation.Coordinate.YCoordinate);
+            Assert.Equal(Direction.North, report.FinalLocation.DirectionFacing);
         }
         
         [Fact]
@@ -72,11 +72,11 @@ namespace MarsRover.Tests
            PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);
            Engine _engine = new Engine(roverSettings, planetSettings);
            
-            RoverLocation roverLocation = _engine.RunProgram();
+            Report report = _engine.RunProgram();
             
-            Assert.Equal(0, roverLocation.Coordinate.XCoordinate);
-            Assert.Equal(0, roverLocation.Coordinate.YCoordinate);
-            Assert.Equal(Direction.South, roverLocation.DirectionFacing);
+            Assert.Equal(0, report.FinalLocation.Coordinate.XCoordinate);
+            Assert.Equal(0, report.FinalLocation.Coordinate.YCoordinate);
+            Assert.Equal(Direction.South, report.FinalLocation.DirectionFacing);
         }
         
         [Fact]
@@ -88,11 +88,11 @@ namespace MarsRover.Tests
             PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);
             Engine _engine = new Engine(roverSettings, planetSettings);
             
-            RoverLocation roverLocation = _engine.RunProgram();
+            Report report = _engine.RunProgram();
             
-            Assert.Equal(0, roverLocation.Coordinate.XCoordinate);
-            Assert.Equal(19, roverLocation.Coordinate.YCoordinate);
-            Assert.Equal(Direction.East, roverLocation.DirectionFacing);
+            Assert.Equal(0, report.FinalLocation.Coordinate.XCoordinate);
+            Assert.Equal(19, report.FinalLocation.Coordinate.YCoordinate);
+            Assert.Equal(Direction.East, report.FinalLocation.DirectionFacing);
         }
     }
 }
