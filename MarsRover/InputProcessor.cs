@@ -35,7 +35,7 @@ namespace MarsRover
             return new PlanetSettings(sizeOfGrid, obstacles, marsSurfaceBuilder);
         }
 
-        public List<Command> GetListOfCommands(string[] args)
+        private List<Command> GetListOfCommands(string[] args)
         {
             List<Command> commandList = new List<Command>();
             string[] commands = DefaultCommands;
@@ -78,7 +78,7 @@ namespace MarsRover
             }
         }
 
-        public RoverLocation DetermineStartingLocation(string[] args)
+        private RoverLocation DetermineStartingLocation(string[] args)
         {
             Coordinate coordinate = new Coordinate(1, 1);
             Direction directionfacing = Direction.North;
