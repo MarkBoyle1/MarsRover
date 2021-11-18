@@ -9,20 +9,17 @@ namespace MarsRover
     public class Engine
     {
         private IMarsSurfaceBuilder _marsSurfaceBuilder;
-        private ReportBuilder _reportBuilder = new ReportBuilder();
-        private RoverBehaviour _roverBehaviour = new RoverBehaviour();
-        private Validations _validations = new Validations();
-        private Output _output = new Output();
-        private Random _random = new Random();
+        private ReportBuilder _reportBuilder;
+        private RoverBehaviour _roverBehaviour;
+        private Validations _validations;
+        private Output _output;
         private IObjective _objective;
-        private const int SizeOfGrid = 20;
         private RoverSettings _roverSettings;
         private PlanetSettings _planetSettings;
         private MarsSurface _initialSurface;
-        private MarsSurface _finalSurface;
         private int _distancedTravelled;
-        private LaserShot _laserShot = new LaserShot();
-        private UtilityMethods _utility = new UtilityMethods();
+        private LaserShot _laserShot;
+        private UtilityMethods _utility;
         
         public Engine(RoverSettings roverSettings, PlanetSettings planetSettings)
         {
@@ -30,6 +27,12 @@ namespace MarsRover
             _planetSettings = planetSettings;
             _marsSurfaceBuilder = _planetSettings.MarsSurfaceBuilder;
             _objective = _roverSettings.Objective;
+            _utility = new UtilityMethods();
+            _laserShot = new LaserShot(_marsSurfaceBuilder);
+            _output = new Output();
+            _validations = new Validations();
+            _roverBehaviour = new RoverBehaviour();
+            _reportBuilder = new ReportBuilder();
         }
         
         public Report RunProgram()
@@ -41,70 +44,49 @@ namespace MarsRover
             _initialSurface = surface;
             _output.DisplaySurface(surface, 500);
 
-            RoverLocation finalDestination = ActivateRover(surface, roverLocation);
-
-            Report report =
-                _reportBuilder.CreateReport(_distancedTravelled, _initialSurface, _finalSurface, finalDestination);
+            Command command = _objective.ReceiveCommand(surface, roverLocation);
+            Report report = ActivateRover(surface, roverLocation, command);
 
             _output.DisplayReport(report);
             
             return report;
         }
-
-        public RoverLocation ActivateRover(MarsSurface surface, RoverLocation roverLocation)
+        
+        private Report ActivateRover(MarsSurface surface, RoverLocation roverLocation, Command command)
         {
-            Command command = _objective.ReceiveCommand(surface, roverLocation);
-
+            RoverLocation newLocation = roverLocation;
+            
             while (command.Instruction != RoverInstruction.Stop)
             {
-                RoverLocation oldLocation = roverLocation;
-
                 if (command.Instruction == RoverInstruction.ShootLaser)
                 {
-                    // surface = _laserShot.FireGun(surface, roverLocation);
                     surface = FireGun(surface, roverLocation.Coordinate, roverLocation.DirectionFacing);
                 }
                 else
                 {
-                    RoverLocation newLocation = _roverBehaviour.ExecuteCommand(roverLocation, command);
-                    
+                    newLocation = _roverBehaviour.ExecuteCommand(roverLocation, command);
+
                     if (_validations.LocationContainsObstacle(surface, newLocation))
                     {
                         _output.DisplayMessage(OutputMessages.ObstacleFound);
                         command = _objective.ReceiveCommandForObstacle();
-                        
-                        if (command.Instruction == RoverInstruction.Stop)
-                        {
-                            break;
-                        }
-                        
-                        newLocation = _roverBehaviour.ExecuteCommand(roverLocation, command);
+                        continue;
                     }
-
-                    if (command.Instruction is RoverInstruction.MoveForward or RoverInstruction.MoveBack)
-                    {
-                        _distancedTravelled += 1;
-                    }
-
+                    
+                    UpdateDistanceTravelled(command);
+                    
+                    surface = MoveRover(surface, roverLocation, newLocation);
                     roverLocation = newLocation;
-                   
-                    surface = _marsSurfaceBuilder.UpdateSurface(surface, oldLocation.Coordinate, DisplaySymbol.FreeSpace);
-                    surface = _marsSurfaceBuilder.UpdateSurface(surface, newLocation.Coordinate, _utility.DetermineDirectionOfRover(newLocation.DirectionFacing));
-                    Coordinate nextLocation = _utility.GetNextSpace(roverLocation.Coordinate, roverLocation.DirectionFacing);
-                    nextLocation = _utility.WrapAroundPlanetIfRequired(nextLocation);
-                    surface = _marsSurfaceBuilder.UpdateSurface(surface, nextLocation, _utility.RevealSpaceInFrontOfRover(surface, nextLocation));
-
-                    _output.DisplaySurface(surface, 500);
                 }
 
                 command = _objective.ReceiveCommand(surface, roverLocation);
-            }
-
-            _finalSurface = surface;
             
-            return roverLocation;
+                _output.DisplaySurface(surface, 500);
+            }
+            
+            return _reportBuilder.CreateReport(_distancedTravelled, _initialSurface, surface, roverLocation);
         }
-
+        
         public MarsSurface FireGun(MarsSurface surface, Coordinate coordinate, Direction direction)
         {
             string symbolForOldLocation =
@@ -122,6 +104,28 @@ namespace MarsRover
             }
 
             return FireGun(surface, laserBeam.Coordinate, direction);
+        }
+        
+        private MarsSurface MoveRover(MarsSurface surface, RoverLocation oldLocation, RoverLocation newLocation)
+        {
+            surface = _marsSurfaceBuilder.UpdateSurface(surface, oldLocation.Coordinate, DisplaySymbol.FreeSpace);
+            surface = _marsSurfaceBuilder.UpdateSurface(surface, newLocation.Coordinate,
+                _utility.DetermineDirectionOfRover(newLocation.DirectionFacing));
+            Coordinate nextLocation =
+                _utility.GetNextSpace(newLocation.Coordinate, newLocation.DirectionFacing);
+            nextLocation = _utility.WrapAroundPlanetIfRequired(nextLocation);
+            surface = _marsSurfaceBuilder.UpdateSurface(surface, nextLocation,
+                _utility.RevealSpaceInFrontOfRover(surface, nextLocation));
+
+            return surface;
+        }
+
+        private void UpdateDistanceTravelled(Command command)
+        {
+            if (command.Instruction is RoverInstruction.MoveForward or RoverInstruction.MoveBack)
+            {
+                _distancedTravelled += 1;
+            }
         }
     }
 }

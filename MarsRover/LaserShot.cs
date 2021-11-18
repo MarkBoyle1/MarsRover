@@ -5,10 +5,18 @@ namespace MarsRover
 {
     public class LaserShot
     {
-        private Output _output = new Output();
-        private IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>());
-        private Validations _validations = new Validations();
-        private UtilityMethods _utility = new UtilityMethods();
+        private Output _output;
+        private IMarsSurfaceBuilder _marsSurfaceBuilder;
+        private Validations _validations;
+        private UtilityMethods _utility;
+
+        public LaserShot(IMarsSurfaceBuilder marsSurfaceBuilder)
+        {
+            _utility = new UtilityMethods();
+            _validations = new Validations();
+            _output = new Output();
+            _marsSurfaceBuilder = marsSurfaceBuilder;
+        }
 
         private void CauseExplosion(MarsSurface surface, Coordinate coordinate)
         {

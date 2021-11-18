@@ -9,6 +9,7 @@ namespace MarsRover
     {
         static void Main(string[] args)
         {
+            // args = new[] {"explore"};
             InputProcessor _inputProcessor = new InputProcessor();
             
             RoverSettings roverSettings = _inputProcessor.GetRoverSettings(args);
