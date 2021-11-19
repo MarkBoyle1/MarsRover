@@ -1,4 +1,3 @@
-
 using System;
 
 namespace MarsRover.Objectives
@@ -6,7 +5,7 @@ namespace MarsRover.Objectives
     public class MapSurface : IObjective
     {
         private Random random = new Random();
-        public Command ReceiveCommand(MarsSurface surface, RoverLocation location)
+        public Command ReceiveCommand()
         {
             if (random.Next(1, 11) > 1)
             {
@@ -24,6 +23,11 @@ namespace MarsRover.Objectives
             }
             
             return new Command(RoverInstruction.TurnRight);
+        }
+        
+        public bool CheckForCompletion(MarsSurface surface)
+        {
+            return surface.AreasDiscovered == 1;
         }
     }
 }

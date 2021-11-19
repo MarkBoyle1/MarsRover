@@ -9,11 +9,13 @@ namespace MarsRover.Tests
         [Fact]
         public void given_argsEqualsLocationOneOneN_when_GetRoverSettings_then_DirectionFacingEqualsNorth()
         {
-            string[] args = new[] {"location:1,1,N"};
+            string[] args = new[] {"location:1,2,N"};
 
             RoverSettings roverSettings = _inputProcessor.GetRoverSettings(args);
             
             Assert.Equal(Direction.North, roverSettings.RoverLocation.DirectionFacing);
+            Assert.Equal(1, roverSettings.RoverLocation.Coordinate.XCoordinate);
+            Assert.Equal(2, roverSettings.RoverLocation.Coordinate.YCoordinate);
         }
         
         [Fact]
@@ -34,6 +36,20 @@ namespace MarsRover.Tests
             PlanetSettings planetSettings = _inputProcessor.GetPlanetSettings(args);
             
             Assert.Equal(3, planetSettings.Obstacles.Count);
+        }
+        
+        [Fact]
+        public void given_obstaclesInputContainsThreeCoordinates_when_CreateSurface_then_thoseCoordinatesContainsObstacles()
+        {
+            string[] args = new[] {"obstacles:1,2;2,2;3,1"};
+
+            PlanetSettings planetSettings = _inputProcessor.GetPlanetSettings(args);
+            IMarsSurfaceBuilder marsSurfaceBuilder = new MarsSurfaceBuilder(planetSettings.Obstacles);
+            MarsSurface surface = marsSurfaceBuilder.CreateSurface();
+            
+            Assert.Equal(DisplaySymbol.Obstacle, surface.GetPoint(new Coordinate(1,2)));
+            Assert.Equal(DisplaySymbol.Obstacle, surface.GetPoint(new Coordinate(2,2)));
+            Assert.Equal(DisplaySymbol.Obstacle, surface.GetPoint(new Coordinate(3,1)));
         }
     }
 }

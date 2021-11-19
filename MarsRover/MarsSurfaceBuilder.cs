@@ -8,6 +8,7 @@ namespace MarsRover
     {
         private const int SizeOfGrid = 20;
         private const int PercentageOfObstacles = 10;
+        private const int AreasDiscovered = SizeOfGrid * SizeOfGrid;
         private List<Coordinate> ObstacleList; 
         private Random random = new Random();
 
@@ -32,7 +33,7 @@ namespace MarsRover
 
             surface = AddObstacles(surface, ObstacleList);
 
-            return new MarsSurface(surface, ObstacleList.Count);
+            return new MarsSurface(surface, ObstacleList.Count, AreasDiscovered);
         }
 
         private List<Coordinate> GenerateRandomObstacles()
@@ -80,10 +81,10 @@ namespace MarsRover
                     obstacleCount = surfacePoint == DisplaySymbol.Obstacle ? obstacleCount + 1 : obstacleCount;
                 }
             }
-
+            obstacleCount = surface.Surface[location.YCoordinate][location.XCoordinate] == DisplaySymbol.Obstacle ? obstacleCount - 1 : obstacleCount;
             updatedSurface[location.YCoordinate][location.XCoordinate] = symbol;
             
-            return new MarsSurface(updatedSurface, obstacleCount);
+            return new MarsSurface(updatedSurface, obstacleCount, AreasDiscovered);
         }
     }
 }

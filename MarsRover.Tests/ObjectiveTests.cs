@@ -15,9 +15,19 @@ namespace MarsRover.Tests
         }
         
         [Fact]
-        public void given_objectiveEqualsMapSurface_and_RoverMeetsObstacle_when_ExecuteCommand_then_return_turnLeft()
+        public void given_objectiveEqualsMapSurface_and_RoverMeetsObstacle_when_ExecuteCommand_then_commandDoesNotEqualStop()
         {
             IObjective objective = new MapSurface();
+        
+            Command receivedCommand = objective.ReceiveCommandForObstacle();
+        
+            Assert.True(receivedCommand.Instruction != RoverInstruction.Stop);
+        }
+        
+        [Fact]
+        public void given_objectiveEqualsDestroyer_and_RoverMeetsObstacle_when_ExecuteCommand_then_commandDoesNotEqualStop()
+        {
+            IObjective objective = new Destroyer();
         
             Command receivedCommand = objective.ReceiveCommandForObstacle();
         

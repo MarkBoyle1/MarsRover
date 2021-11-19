@@ -1,9 +1,5 @@
-﻿
-using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Text;
-using Microsoft.VisualBasic;
 
 namespace MarsRover
 {
@@ -11,7 +7,6 @@ namespace MarsRover
     {
         static void Main(string[] args)
         {
-            // args = new[] {"explore"};
             string defaultFilePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/MarsRoverInput.csv";
 
             if (args.Contains("file"))

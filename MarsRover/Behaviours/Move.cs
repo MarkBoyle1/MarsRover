@@ -2,28 +2,22 @@ namespace MarsRover.Behaviours
 {
     public class Move : IBehaviour
     {
-        private int sizeOfGrid = 20;
+        private UtilityMethods _utility;
         private RoverInstruction _instruction;
+        private int sizeOfGrid = 20;
 
-        public Move(RoverInstruction instruction)
+        public Move(RoverInstruction instruction, UtilityMethods utility)
         {
             _instruction = instruction;
+            _utility = utility;
         }
 
         public RoverLocation ExecuteCommand(RoverLocation location)
         {
             Coordinate newCoordinate = location.Coordinate;
             Direction directionFacing = location.DirectionFacing;
-
-            if (_instruction == RoverInstruction.MoveForward)
-            {
-                newCoordinate = MoveRover(location.Coordinate, directionFacing, RoverInstruction.MoveForward);
-            }
-
-            if (_instruction == RoverInstruction.MoveBack)
-            {
-                newCoordinate = MoveRover(location.Coordinate, directionFacing, RoverInstruction.MoveBack);
-            }
+            
+            newCoordinate = MoveRover(location.Coordinate, directionFacing, _instruction);
             
             return new RoverLocation(newCoordinate, directionFacing);
         }
@@ -48,28 +42,10 @@ namespace MarsRover.Behaviours
                     xCoordinate = instruction == RoverInstruction.MoveForward ? xCoordinate - 1 : xCoordinate + 1;
                     break;
             }
-
-            xCoordinate = WrapAroundPlanetIfRequired(xCoordinate);
-            yCoordinate = WrapAroundPlanetIfRequired(yCoordinate);
-
+            
             Coordinate newCoordinate = new Coordinate(xCoordinate, yCoordinate);
 
-            return newCoordinate;
-        }
-        
-        private int WrapAroundPlanetIfRequired(int coordinate)
-        {
-            if (coordinate < 0)
-            {
-                return sizeOfGrid - 1;
-            }
-
-            if (coordinate > sizeOfGrid - 1)
-            {
-                return 0;
-            }
-
-            return coordinate;
+            return _utility.WrapAroundPlanetIfRequired(newCoordinate);
         }
     }
 }

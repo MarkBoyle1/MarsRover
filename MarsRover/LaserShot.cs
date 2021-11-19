@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace MarsRover
 {
@@ -10,11 +9,11 @@ namespace MarsRover
         private Validations _validations;
         private UtilityMethods _utility;
 
-        public LaserShot(IMarsSurfaceBuilder marsSurfaceBuilder)
+        public LaserShot(IMarsSurfaceBuilder marsSurfaceBuilder, Output output, UtilityMethods utility)
         {
-            _utility = new UtilityMethods();
+            _utility = utility;
             _validations = new Validations();
-            _output = new Output();
+            _output = output;
             _marsSurfaceBuilder = marsSurfaceBuilder;
         }
 

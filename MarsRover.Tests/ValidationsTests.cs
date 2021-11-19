@@ -21,5 +21,37 @@ namespace MarsRover.Tests
             
             Assert.True(isObstacle);
         }
+
+        [Fact]
+        public void given_xcoordinateEqualsMinusOne_when_LocationIsOnGrid_then_return_False()
+        {
+            Coordinate coordinate = new Coordinate(-1, 0);
+            
+            Assert.False(_validations.LocationIsOnGrid(20, coordinate));
+        }
+        
+        [Fact]
+        public void given_ycoordinateEqualsMinusOne_when_LocationIsOnGrid_then_return_False()
+        {
+            Coordinate coordinate = new Coordinate(0, -1);
+            
+            Assert.False(_validations.LocationIsOnGrid(20, coordinate));
+        }
+        
+        [Fact]
+        public void given_xcoordinateEquals20_when_LocationIsOnGrid_then_return_False()
+        {
+            Coordinate coordinate = new Coordinate(20, 0);
+            
+            Assert.False(_validations.LocationIsOnGrid(20, coordinate));
+        }
+        
+        [Fact]
+        public void given_ycoordinateEquals20_when_LocationIsOnGrid_then_return_False()
+        {
+            Coordinate coordinate = new Coordinate(0, 20);
+            
+            Assert.False(_validations.LocationIsOnGrid(20, coordinate));
+        }
     }
 }

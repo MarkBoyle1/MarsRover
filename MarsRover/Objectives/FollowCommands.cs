@@ -11,7 +11,7 @@ namespace MarsRover.Objectives
             _commands = commands;
         }
         
-        public Command ReceiveCommand(MarsSurface surface, RoverLocation location)
+        public Command ReceiveCommand()
         {
             if (_commands.Count == 0)
             {
@@ -26,6 +26,11 @@ namespace MarsRover.Objectives
         public Command ReceiveCommandForObstacle()
         {
             return new Command(RoverInstruction.Stop);
+        }
+        
+        public bool CheckForCompletion(MarsSurface surface)
+        {
+            return false;
         }
     }
 }

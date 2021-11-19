@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace MarsRover
@@ -20,13 +18,14 @@ namespace MarsRover
                 )
                 .ToArray();
 
-            return new MarsSurface(surface, 0);
+            return new MarsSurface(surface, 0, 0);
         }
         
         public MarsSurface UpdateSurface(MarsSurface surface, Coordinate location, string symbol)
         {
             string[][] updatedSurface = new string[SizeOfGrid][];
             int obstacleCount = symbol == DisplaySymbol.Obstacle ? 1 : 0;
+            int areasDiscovered = 1;
             updatedSurface = updatedSurface.Select(x => new string[SizeOfGrid]).ToArray();
                 
             for(int x = 0; x < SizeOfGrid; x++)
@@ -36,12 +35,15 @@ namespace MarsRover
                     string surfacePoint = surface.GetPoint(new Coordinate(x,y));
                     updatedSurface[y][x] = surfacePoint;
                     obstacleCount = surfacePoint == DisplaySymbol.Obstacle ? obstacleCount + 1 : obstacleCount;
+                    areasDiscovered = surfacePoint != DisplaySymbol.UnknownSpace
+                        ? areasDiscovered + 1
+                        : areasDiscovered;
                 }
             }
-
+            
             updatedSurface[location.YCoordinate][location.XCoordinate] = symbol;
             
-            return new MarsSurface(updatedSurface, obstacleCount);
+            return new MarsSurface(updatedSurface, obstacleCount, areasDiscovered);
         }
     }
 }

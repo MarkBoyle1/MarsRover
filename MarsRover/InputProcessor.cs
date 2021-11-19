@@ -16,6 +16,7 @@ namespace MarsRover
         public const string South = "S";
         public const string West = "W";
         private string[] DefaultCommands = new string[] {"r", "f", "f", "r", "f", "f", "l", "b"};
+        private int DefaultSizeOfGrid = 20;
 
         public RoverSettings GetRoverSettings(string[] args)
         {
@@ -94,7 +95,6 @@ namespace MarsRover
                     coordinate = new Coordinate(xCoordinate, yCoordinate);
                     directionfacing = DetermineDirection(startingLocation[2]);
                 }
-                
             }
 
             return new RoverLocation(coordinate, directionfacing);
@@ -161,12 +161,12 @@ namespace MarsRover
                 }
             }
 
-            return new MapSurface();
+            return new Destroyer();
         }
 
         private int GetSizeOfGrid(string[] args)
         {
-            return 20;
+            return DefaultSizeOfGrid;
         }
 
         private IMarsSurfaceBuilder GetTypeOfBuilder(string[] args, int sizeOfGrid, List<Coordinate> obstacles)

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 
 namespace MarsRover
@@ -16,7 +15,7 @@ namespace MarsRover
                 .ToArray();
 
             surface[2][3] = DisplaySymbol.Obstacle;
-            return new MarsSurface(surface, 1);
+            return new MarsSurface(surface, 1, 16);
         }
         
         public MarsSurface UpdateSurface(MarsSurface surface, Coordinate location, string symbol)
@@ -34,7 +33,7 @@ namespace MarsRover
 
             updatedSurface[location.YCoordinate][location.XCoordinate] = symbol;
             
-            return new MarsSurface(updatedSurface, 1);
+            return new MarsSurface(updatedSurface, 1, 16);
         }
     }
 }

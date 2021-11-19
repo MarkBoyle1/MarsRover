@@ -4,8 +4,13 @@ namespace MarsRover
 {
     public class UtilityMethods
     {
-        private int SizeOfGrid = 20;
+        private int _sizeOfGrid;
         private Random _random = new Random();
+
+        public UtilityMethods(int sizeOfGrid)
+        {
+            _sizeOfGrid = sizeOfGrid;
+        }
         public Coordinate GetNextSpace(Coordinate coordinate, Direction direction)
         {
             switch (direction)
@@ -59,10 +64,10 @@ namespace MarsRover
         {
             if (coordinate < 0)
             {
-                return SizeOfGrid - 1;
+                return _sizeOfGrid - 1;
             }
             
-            if (coordinate > SizeOfGrid - 1)
+            if (coordinate > _sizeOfGrid - 1)
             {
                 return 0;
             }

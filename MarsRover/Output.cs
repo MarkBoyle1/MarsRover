@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -8,13 +7,18 @@ namespace MarsRover
     public class Output
     {
         private ConsoleColor _explosionColour = ConsoleColor.Yellow;
+        private int _sizeOfGrid;
+        public Output(int sizeOfGrid)
+        {
+            _sizeOfGrid = sizeOfGrid;
+        }
         public void DisplaySurface(MarsSurface surface, int threadSpeed)
         {
             Console.OutputEncoding = Encoding.UTF8;
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
 
-            for(int row = 0; row < 20; row++)
+            for(int row = 0; row < _sizeOfGrid; row++)
             {
                 foreach (var point in surface.Surface[row])
                 {

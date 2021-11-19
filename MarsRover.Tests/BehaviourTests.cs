@@ -4,7 +4,14 @@ namespace MarsRover.Tests
 {
     public class BehaviourTests
     {
-        private RoverBehaviour _roverBehaviour = new RoverBehaviour();
+        private UtilityMethods _utility;
+        private RoverBehaviour _roverBehaviour;
+
+        public BehaviourTests()
+        {
+            _utility = new UtilityMethods(20);
+            _roverBehaviour = new RoverBehaviour(_utility);
+        }
         
         [Fact]
         public void given_locationEqualsL1and1andN_and_commandEqualsTurnLeft_when_ExecuteCommand_then_LocationEquals1and1andW()
@@ -84,12 +91,6 @@ namespace MarsRover.Tests
             int actualResult = roverLocation.Coordinate.XCoordinate;
             
             Assert.Equal(expectResult, actualResult);
-        }
-
-        [Fact]
-        public void rover_avoids_obstacle()
-        {
-            
         }
     }
 }

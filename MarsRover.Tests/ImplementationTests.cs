@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using MarsRover.Objectives;
 using Xunit;
@@ -92,6 +91,35 @@ namespace MarsRover.Tests
             
             Assert.Equal(0, report.FinalLocation.Coordinate.XCoordinate);
             Assert.Equal(19, report.FinalLocation.Coordinate.YCoordinate);
+            Assert.Equal(Direction.East, report.FinalLocation.DirectionFacing);
+        }
+        
+        [Fact]
+        public void CompletesMappingMode()
+        {
+            IMarsSurfaceBuilder marsSurfaceBuilder = new MappingSurfaceBuilder(1);
+
+            MarsSurface surface = marsSurfaceBuilder.CreateSurface();
+            surface = marsSurfaceBuilder.UpdateSurface(surface, new Coordinate(0, 0), DisplaySymbol.RoverNorthFacing);
+
+            IObjective objective = new MapSurface();
+
+            Assert.Equal(1, surface.AreasDiscovered);
+        }
+
+        [Fact]
+        public void given_roverMeetsObstaclesBeforeFinishingCommands_when_RunProgram_then_RoverStopsAtObstacle()
+        {
+            string[] args = new[] {"location:0,0,E", "commands:f,f,f,r,f", "obstacles:2,0", "explore"};
+
+            RoverSettings roverSettings = _inputProcesser.GetRoverSettings(args);
+            PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);
+            Engine _engine = new Engine(roverSettings, planetSettings);
+            
+            Report report = _engine.RunProgram();
+            
+            Assert.Equal(1, report.FinalLocation.Coordinate.XCoordinate);
+            Assert.Equal(0, report.FinalLocation.Coordinate.YCoordinate);
             Assert.Equal(Direction.East, report.FinalLocation.DirectionFacing);
         }
     }

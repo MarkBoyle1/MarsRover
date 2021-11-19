@@ -2,7 +2,8 @@ namespace MarsRover.Objectives
 {
     public interface IObjective
     {
-        Command ReceiveCommand(MarsSurface surface, RoverLocation location);
+        Command ReceiveCommand();
         Command ReceiveCommandForObstacle();
+        bool CheckForCompletion(MarsSurface surface);
     }
 }

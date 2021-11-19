@@ -5,7 +5,7 @@ namespace MarsRover.Objectives
     public class Destroyer : IObjective
     {
         private Random random = new Random();
-        public Command ReceiveCommand(MarsSurface surface, RoverLocation location)
+        public Command ReceiveCommand()
         {
             int randomNumber = random.Next(1, 11);
             if (randomNumber >= 6)
@@ -34,6 +34,11 @@ namespace MarsRover.Objectives
             }
             
             return new Command(RoverInstruction.TurnRight);
+        }
+
+        public bool CheckForCompletion(MarsSurface surface)
+        {
+            return surface.ObstacleCount == 0;
         }
     }
 }
