@@ -8,7 +8,7 @@ namespace MarsRover
         private ReportBuilder _reportBuilder;
         private RoverBehaviour _roverBehaviour;
         private Validations _validations;
-        private Output _output;
+        private IOutput _output;
         private IObjective _objective;
         private RoverSettings _roverSettings;
         private PlanetSettings _planetSettings;

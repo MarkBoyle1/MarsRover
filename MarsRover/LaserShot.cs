@@ -4,13 +4,13 @@ namespace MarsRover
 {
     public class LaserShot
     {
-        private Output _output;
+        private IOutput _output;
         private IMarsSurfaceBuilder _marsSurfaceBuilder;
         private Validations _validations;
         private UtilityMethods _utility;
         private int _sizeOfGrid;
 
-        public LaserShot(IMarsSurfaceBuilder marsSurfaceBuilder, Output output, UtilityMethods utility, int sizeOfGrid)
+        public LaserShot(IMarsSurfaceBuilder marsSurfaceBuilder, IOutput output, UtilityMethods utility, int sizeOfGrid)
         {
             _utility = utility;
             _validations = new Validations();

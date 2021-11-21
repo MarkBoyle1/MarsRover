@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace MarsRover
 {
-    public class Output
+    public class Output : IOutput
     {
         private ConsoleColor _explosionColour = ConsoleColor.Yellow;
         private int _sizeOfGrid;

@@ -13,10 +13,10 @@ namespace MarsRover
         public const string TurnRight = "r";
         public const string MoveForward = "f";
         public const string MoveBack = "b";
-        public const string North = "N";
-        public const string East = "E";
-        public const string South = "S";
-        public const string West = "W";
+        public const string North = "n";
+        public const string East = "e";
+        public const string South = "s";
+        public const string West = "w";
         private string[] DefaultCommands = new string[] {"r", "f", "f", "r", "f", "f", "l", "b"};
         private int DefaultSizeOfGrid = 20;
 
@@ -159,19 +159,29 @@ namespace MarsRover
 
         private IObjective DetermineObjective(string[] args, List<Command> commands, int maxDistance)
         {
+            string objective = String.Empty;
+            
             foreach (var argument in args)
             {
-                if (argument == "map")
+                if (argument.StartsWith("mode:"))
+                {
+                    objective = argument.Remove(0,5);
+                }
+            }
+            
+            foreach (var argument in args)
+            {
+                if (objective == "map")
                 {
                     return new MapSurface(maxDistance);
                 }
 
-                if (argument == "explore")
+                if (objective == "explore")
                 {
                     return new FollowCommands(commands);
                 }
                 
-                if (argument == "destroyer")
+                if (objective == "destroyer")
                 {
                     return new Destroyer(maxDistance);
                 }
@@ -197,7 +207,7 @@ namespace MarsRover
         {
             foreach (var argument in args)
             {
-                if (argument == "map")
+                if (argument == "mode:map")
                 {
                     return new MappingSurfaceBuilder(sizeOfGrid);
                 }

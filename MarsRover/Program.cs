@@ -14,7 +14,7 @@ namespace MarsRover
             InputProcessor _inputProcessor = new InputProcessor();
             
             args = Array.ConvertAll(args, a => a.ToLower());
-
+            
             try
             {
                 args = _inputProcessor.GetInputFromFile(args);
@@ -32,50 +32,6 @@ namespace MarsRover
             Engine engine = new Engine(roverSettings, planetSettings);
             
             engine.RunProgram();
-            
-
-            // Console.WriteLine(Path.GetExtension(defaultFilePath));
-            // var myJsonString = File.ReadAllText(defaultFilePath);
-            // var myJObject = JObject.Parse(myJsonString);
-            // var properties = myJObject.Properties();
-            //
-            // foreach (var p in properties)
-            // {
-            //     Console.WriteLine(p.Name + p.Value);
-            // }
-
-            // SelectToken("location:").Value<string>());
-
-            // string json = @"
-            //     {
-            //        'CPU': 'Intel',
-            //        'PSU': '500W',
-            //        'Drives': 
-            //         [
-            //              'DVD read/writer'
-            //              /*(broken)*/,
-            //              '500 gigabyte hard drive',
-            //              '200 gigabyte hard drive'
-            //          ]
-            //      }";
-            
-            // JsonTextReader reader = new JsonTextReader(new StringReader(json));
-            // while (reader.Read())
-            // {
-            //     if (reader.Value != null)
-            //     {
-            //         Console.WriteLine("Token: {0}, Value: {1}", reader.TokenType, reader.Value);
-            //     }
-            //     else
-            //     {
-            //         Console.WriteLine("Token: {0}", reader.);
-            //     }
-            // }
-
-
-
-
-
         }
     }
 }
