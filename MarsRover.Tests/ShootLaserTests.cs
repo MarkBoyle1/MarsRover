@@ -22,12 +22,12 @@ namespace MarsRover.Tests
             PlanetSettings planetSettings = _inputProcessor.GetPlanetSettings(args);
             Engine _engine = new Engine(roverSettings, planetSettings);
 
-            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(planetSettings.Obstacles);
+            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(planetSettings.Obstacles, 20);
             
             MarsSurface surface = _marsSurfaceBuilder.CreateSurface();
             surface = _marsSurfaceBuilder.UpdateSurface(surface, new Coordinate(1,1), ">");
             LaserShot laserShot =
-                new LaserShot(planetSettings.MarsSurfaceBuilder, new Output(20), new UtilityMethods(20));
+                new LaserShot(planetSettings.MarsSurfaceBuilder, new Output(20), new UtilityMethods(20), 20);
             surface = laserShot.FireGun(surface, _defaultLocation.Coordinate, _defaultLocation.DirectionFacing);
             
             Assert.Equal(DisplaySymbol.FreeSpace, surface.GetPoint(new Coordinate(1,5)));

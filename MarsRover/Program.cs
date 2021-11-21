@@ -12,6 +12,8 @@ namespace MarsRover
         static void Main(string[] args)
         {
             InputProcessor _inputProcessor = new InputProcessor();
+            
+            args = Array.ConvertAll(args, a => a.ToLower());
 
             try
             {

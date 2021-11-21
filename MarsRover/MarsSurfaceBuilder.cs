@@ -6,15 +6,17 @@ namespace MarsRover
 {
     public class MarsSurfaceBuilder : IMarsSurfaceBuilder
     {
-        private const int SizeOfGrid = 20;
+        private int SizeOfGrid = 20;
         private const int PercentageOfObstacles = 10;
-        private const int AreasDiscovered = SizeOfGrid * SizeOfGrid;
+        private int AreasDiscovered;
         private List<Coordinate> ObstacleList; 
         private Random random = new Random();
 
-        public MarsSurfaceBuilder(List<Coordinate> obstacleList)
+        public MarsSurfaceBuilder(List<Coordinate> obstacleList, int sizeOfGrid)
         {
             ObstacleList = obstacleList;
+            SizeOfGrid = sizeOfGrid;
+            AreasDiscovered = SizeOfGrid * SizeOfGrid;
         }
 
         public MarsSurface CreateSurface()

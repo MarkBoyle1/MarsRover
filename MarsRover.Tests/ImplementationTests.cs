@@ -24,7 +24,7 @@ namespace MarsRover.Tests
             _defaultplanPlanetSettings = new PlanetSettings
             (20,
                 new List<Coordinate>(),
-                new MarsSurfaceBuilder(obstacles)
+                new MarsSurfaceBuilder(obstacles, 20)
             );
             
             _engine = new Engine(_defaultRoverSettings, _defaultplanPlanetSettings);
@@ -124,9 +124,9 @@ namespace MarsRover.Tests
         }
         
         [Fact]
-        public void given_maxDistanceEquals20_when_RunProgram_then_distanceTravelledEquals20()
+        public void given_maxDistanceEquals5_when_RunProgram_then_distanceTravelledEquals5()
         {
-            string[] args = new[] {"location:0,0,E", "obstacles:2,0", "map", "maxDistance:5"};
+            string[] args = new[] {"location:0,0,E", "obstacles:2,0", "map", "maxdistance:5"};
 
             RoverSettings roverSettings = _inputProcesser.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);

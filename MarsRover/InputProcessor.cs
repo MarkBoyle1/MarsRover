@@ -148,7 +148,7 @@ namespace MarsRover
         {
             foreach (var argument in args)
             {
-                if (argument.StartsWith("maxDistance:"))
+                if (argument.StartsWith("maxdistance:"))
                 {
                      return Convert.ToInt32(argument.Remove(0,12));
                 }
@@ -182,6 +182,14 @@ namespace MarsRover
 
         private int GetSizeOfGrid(string[] args)
         {
+            foreach (var argument in args)
+            {
+                if (argument.StartsWith("gridsize:"))
+                {
+                    return Convert.ToInt32(argument.Remove(0,9));
+                }
+            }
+
             return DefaultSizeOfGrid;
         }
 
@@ -195,17 +203,17 @@ namespace MarsRover
                 }
             }
 
-            return new MarsSurfaceBuilder(obstacles);
+            return new MarsSurfaceBuilder(obstacles, sizeOfGrid);
         }
 
         public string[] GetInputFromFile(string[] args)
         {
             List<string> updatedArgs = new List<string>();
             string filePath = String.Empty;
-            
+
             foreach (var argument in args)
             {
-                if (argument.StartsWith("filePath:"))
+                if (argument.StartsWith("filepath:"))
                 {
                     filePath = argument.Remove(0,9);
                 }

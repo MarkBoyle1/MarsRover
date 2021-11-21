@@ -25,7 +25,7 @@ namespace MarsRover
             _objective = _roverSettings.Objective;
             _utility = new UtilityMethods(_planetSettings.SizeOfGrid);
             _output = new Output(_planetSettings.SizeOfGrid);
-            _laserShot = new LaserShot(_marsSurfaceBuilder, _output, _utility);
+            _laserShot = new LaserShot(_marsSurfaceBuilder, _output, _utility, _planetSettings.SizeOfGrid);
             _validations = new Validations();
             _roverBehaviour = new RoverBehaviour(_utility);
             _reportBuilder = new ReportBuilder();

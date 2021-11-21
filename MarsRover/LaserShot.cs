@@ -8,13 +8,15 @@ namespace MarsRover
         private IMarsSurfaceBuilder _marsSurfaceBuilder;
         private Validations _validations;
         private UtilityMethods _utility;
+        private int _sizeOfGrid;
 
-        public LaserShot(IMarsSurfaceBuilder marsSurfaceBuilder, Output output, UtilityMethods utility)
+        public LaserShot(IMarsSurfaceBuilder marsSurfaceBuilder, Output output, UtilityMethods utility, int sizeOfGrid)
         {
             _utility = utility;
             _validations = new Validations();
             _output = output;
             _marsSurfaceBuilder = marsSurfaceBuilder;
+            _sizeOfGrid = sizeOfGrid;
         }
         
         public MarsSurface FireGun(MarsSurface surface, Coordinate coordinate, Direction direction)
@@ -51,7 +53,7 @@ namespace MarsRover
         public LaserBeam UpdateLaserShot(MarsSurface surface, Coordinate coordinate, Direction direction)
         {
             Coordinate nextSpace = _utility.GetNextSpace(coordinate, direction);
-            if (!_validations.LocationIsOnGrid(20, nextSpace))
+            if (!_validations.LocationIsOnGrid(_sizeOfGrid, nextSpace))
             {
                 return new LaserBeam(coordinate, DisplaySymbol.FreeSpace);
             }
@@ -59,7 +61,7 @@ namespace MarsRover
                 ? DisplaySymbol.LaserVertical 
                 : DisplaySymbol.LaserHorizontal;
 
-            if (_validations.LocationIsOnGrid(20, nextSpace) && surface.GetPoint(nextSpace) == DisplaySymbol.Obstacle)
+            if (_validations.LocationIsOnGrid(_sizeOfGrid, nextSpace) && surface.GetPoint(nextSpace) == DisplaySymbol.Obstacle)
             {
                 CauseExplosion(surface, nextSpace);
                 symbol = DisplaySymbol.FreeSpace;

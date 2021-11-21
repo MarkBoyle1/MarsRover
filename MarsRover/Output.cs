@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 using System.Threading;
 
@@ -63,6 +64,16 @@ namespace MarsRover
 
         public void DisplayReport(Report report)
         {
+            string[] reportData = new[]
+            {
+                "DistanceTravelled:" + report.DistanceTravelled,
+                "ObstaclesDestroyed:" + report.ObstaclesDestroyed,
+                "ObstaclesDiscovered:" + report.ObstaclesDiscovered
+            };
+
+            string filePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/MissionReport.csv";
+            File.WriteAllLinesAsync(filePath, reportData);
+            
             Console.WriteLine(OutputMessages.MissionComplete);
             Console.WriteLine(OutputMessages.DistanceTravelled + report.DistanceTravelled);
             if (report.ObstaclesDiscovered > 0)

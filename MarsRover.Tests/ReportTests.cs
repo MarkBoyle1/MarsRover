@@ -13,7 +13,7 @@ namespace MarsRover.Tests
         {
             string[] obstacles = new[] {"obstacles:1,1;1,2;0,3"};
             List<Coordinate> obstacleCoordinates = _inputProcessor.TurnObstacleInputsIntoCoordinates(obstacles);
-            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(obstacleCoordinates);
+            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(obstacleCoordinates, 20);
         
             MarsSurface surface = _marsSurfaceBuilder.CreateSurface();
             
@@ -23,11 +23,11 @@ namespace MarsRover.Tests
         [Fact]
         public void given_finalSurfaceHasTwoObstacles_and_initialSurfaceHasOneObstacle_when_CreateReport_then_ObstaclesDiscoveredEqualsOne()
         {
-            IMarsSurfaceBuilder _marsSurfaceBuilderFirst = new MarsSurfaceBuilder(new List<Coordinate>() { new Coordinate(1,1)});
+            IMarsSurfaceBuilder _marsSurfaceBuilderFirst = new MarsSurfaceBuilder(new List<Coordinate>() { new Coordinate(1,1)}, 20);
             MarsSurface _initialSurface = _marsSurfaceBuilderFirst.CreateSurface();
             
             List<Coordinate> obstacles = new List<Coordinate>() {new Coordinate(3, 3), new Coordinate(2,2)};
-            IMarsSurfaceBuilder _marsSurfaceBuilderSecond = new MarsSurfaceBuilder(obstacles);
+            IMarsSurfaceBuilder _marsSurfaceBuilderSecond = new MarsSurfaceBuilder(obstacles, 20);
             MarsSurface _finalSurface = _marsSurfaceBuilderSecond.CreateSurface();
 
             int distanceTravelled = 10;
@@ -42,11 +42,11 @@ namespace MarsRover.Tests
         [Fact]
         public void given_finalSurfaceHasOneObstacle_and_initialSurfaceHasTwoObstacles_when_CreateReport_then_ObstaclesDestroyedEqualsOne()
         {
-            IMarsSurfaceBuilder _marsSurfaceBuilderFirst = new MarsSurfaceBuilder(new List<Coordinate>() { new Coordinate(1,1), new Coordinate(2,2)});
+            IMarsSurfaceBuilder _marsSurfaceBuilderFirst = new MarsSurfaceBuilder(new List<Coordinate>() { new Coordinate(1,1), new Coordinate(2,2)}, 20);
             MarsSurface _initialSurface = _marsSurfaceBuilderFirst.CreateSurface();
             
             List<Coordinate> obstacles = new List<Coordinate>() {new Coordinate(3, 3)};
-            IMarsSurfaceBuilder _marsSurfaceBuilderSecond = new MarsSurfaceBuilder(obstacles);
+            IMarsSurfaceBuilder _marsSurfaceBuilderSecond = new MarsSurfaceBuilder(obstacles, 20);
             MarsSurface _finalSurface = _marsSurfaceBuilderSecond.CreateSurface();
 
             int distanceTravelled = 10;

@@ -44,7 +44,7 @@ namespace MarsRover.Tests
             string[] args = new[] {"obstacles:1,2;2,2;3,1"};
 
             PlanetSettings planetSettings = _inputProcessor.GetPlanetSettings(args);
-            IMarsSurfaceBuilder marsSurfaceBuilder = new MarsSurfaceBuilder(planetSettings.Obstacles);
+            IMarsSurfaceBuilder marsSurfaceBuilder = new MarsSurfaceBuilder(planetSettings.Obstacles, 20);
             MarsSurface surface = marsSurfaceBuilder.CreateSurface();
             
             Assert.Equal(DisplaySymbol.Obstacle, surface.GetPoint(new Coordinate(1,2)));

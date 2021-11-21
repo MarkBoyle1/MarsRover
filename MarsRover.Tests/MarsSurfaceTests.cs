@@ -5,14 +5,14 @@ namespace MarsRover.Tests
 {
     public class MarsSurfaceTests
     {
-        private IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>());
+        private IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>(), 20);
         private InputProcessor _inputProcessor = new InputProcessor();
         
         [Fact]
         public void given_ObstaclesEqualsOneOne_when_CreateSurface_then_CoordinateOneOne_returns_Obstacle()
         {
             Coordinate obstacle1 = new Coordinate(1, 1);
-            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>(){obstacle1});
+            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>(){obstacle1}, 20);
         
             MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
         
@@ -26,7 +26,7 @@ namespace MarsRover.Tests
         {
             Coordinate coordinate = new Coordinate(1, 1);
             RoverLocation startingPoint = new RoverLocation(coordinate, Direction.North);
-            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>());
+            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>(), 20);
         
             MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
             marsSurface = _marsSurfaceBuilder.UpdateSurface(marsSurface, startingPoint.Coordinate, DisplaySymbol.RoverNorthFacing);
@@ -41,7 +41,7 @@ namespace MarsRover.Tests
         {
             Coordinate coordinate = new Coordinate(1, 1);
             RoverLocation startingPoint = new RoverLocation(coordinate, Direction.East);
-            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>());
+            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>(), 20);
         
             MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
             marsSurface = _marsSurfaceBuilder.UpdateSurface(marsSurface, startingPoint.Coordinate, DisplaySymbol.RoverEastFacing);
@@ -57,7 +57,7 @@ namespace MarsRover.Tests
         {
             Coordinate coordinate = new Coordinate(1, 1);
             RoverLocation startingPoint = new RoverLocation(coordinate, Direction.East);
-            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>());
+            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>(), 20);
         
             MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
             marsSurface = _marsSurfaceBuilder.UpdateSurface(marsSurface, startingPoint.Coordinate, DisplaySymbol.RoverEastFacing);
@@ -83,7 +83,7 @@ namespace MarsRover.Tests
         {
             string[] obstacles = new[] {"obstacles:1,1"};
             List<Coordinate> obstacleCoordinates = _inputProcessor.TurnObstacleInputsIntoCoordinates(obstacles);
-            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(obstacleCoordinates);
+            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(obstacleCoordinates, 20);
         
             MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
         
