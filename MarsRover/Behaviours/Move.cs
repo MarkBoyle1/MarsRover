@@ -4,7 +4,6 @@ namespace MarsRover.Behaviours
     {
         private UtilityMethods _utility;
         private RoverInstruction _instruction;
-        private int sizeOfGrid = 20;
 
         public Move(RoverInstruction instruction, UtilityMethods utility)
         {

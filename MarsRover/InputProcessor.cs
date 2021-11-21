@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using MarsRover.Objectives;
+using Newtonsoft.Json.Linq;
 
 namespace MarsRover
 {
@@ -22,7 +24,8 @@ namespace MarsRover
         {
             RoverLocation roverLocation = DetermineStartingLocation(args);
             List<Command> commands = GetListOfCommands(args);
-            IObjective objective = DetermineObjective(args, commands);
+            int maxDistance = GetMaxDistance(args);
+            IObjective objective = DetermineObjective(args, commands, maxDistance);
 
             return new RoverSettings(roverLocation, commands, objective);
         }
@@ -141,13 +144,26 @@ namespace MarsRover
             return obstacleCoordinates;
         }
 
-        private IObjective DetermineObjective(string[] args, List<Command> commands)
+        private int GetMaxDistance(string[] args)
+        {
+            foreach (var argument in args)
+            {
+                if (argument.StartsWith("maxDistance:"))
+                {
+                     return Convert.ToInt32(argument.Remove(0,12));
+                }
+            }
+
+            return 100;
+        }
+
+        private IObjective DetermineObjective(string[] args, List<Command> commands, int maxDistance)
         {
             foreach (var argument in args)
             {
                 if (argument == "map")
                 {
-                    return new MapSurface();
+                    return new MapSurface(maxDistance);
                 }
 
                 if (argument == "explore")
@@ -157,11 +173,11 @@ namespace MarsRover
                 
                 if (argument == "destroyer")
                 {
-                    return new Destroyer();
+                    return new Destroyer(maxDistance);
                 }
             }
 
-            return new Destroyer();
+            return new Destroyer(maxDistance);
         }
 
         private int GetSizeOfGrid(string[] args)
@@ -180,6 +196,47 @@ namespace MarsRover
             }
 
             return new MarsSurfaceBuilder(obstacles);
+        }
+
+        public string[] GetInputFromFile(string[] args)
+        {
+            List<string> updatedArgs = new List<string>();
+            string filePath = String.Empty;
+            
+            foreach (var argument in args)
+            {
+                if (argument.StartsWith("filePath:"))
+                {
+                    filePath = argument.Remove(0,9);
+                }
+            }
+            
+            if (args.Contains("jsonfile") || Path.GetExtension(filePath) == ".json")
+            {
+                filePath = string.IsNullOrEmpty(filePath) ? @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/JSONInput.json" : filePath;
+                
+                var myJsonString = File.ReadAllText(filePath);
+                var myJObject = JObject.Parse(myJsonString);
+                var properties = myJObject.Properties();
+            
+                foreach (var p in properties)
+                {
+                    updatedArgs.Add(p.Name + p.Value);
+                }
+            }
+            else if (args.Contains("csvfile") || Path.GetExtension(filePath) == ".csv")
+            {
+                filePath = string.IsNullOrEmpty(filePath) ? @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/MarsRoverInput.csv" : filePath;
+                args = File.ReadAllLines(filePath);
+                updatedArgs = args.Select(x => x.Trim('"')).ToList();
+            }
+
+            if (updatedArgs.Count == 0)
+            {
+                return args;
+            }
+
+            return updatedArgs.ToArray();
         }
     }
 }

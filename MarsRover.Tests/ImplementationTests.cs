@@ -18,7 +18,7 @@ namespace MarsRover.Tests
             (
                 new RoverLocation(new Coordinate(1, 1), Direction.North),
                 new List<Command>(),
-                new Destroyer()
+                new Destroyer(1000)
             );
 
             _defaultplanPlanetSettings = new PlanetSettings
@@ -102,7 +102,7 @@ namespace MarsRover.Tests
             MarsSurface surface = marsSurfaceBuilder.CreateSurface();
             surface = marsSurfaceBuilder.UpdateSurface(surface, new Coordinate(0, 0), DisplaySymbol.RoverNorthFacing);
 
-            IObjective objective = new MapSurface();
+            IObjective objective = new MapSurface(1000);
 
             Assert.Equal(1, surface.AreasDiscovered);
         }
@@ -121,6 +121,20 @@ namespace MarsRover.Tests
             Assert.Equal(1, report.FinalLocation.Coordinate.XCoordinate);
             Assert.Equal(0, report.FinalLocation.Coordinate.YCoordinate);
             Assert.Equal(Direction.East, report.FinalLocation.DirectionFacing);
+        }
+        
+        [Fact]
+        public void given_maxDistanceEquals20_when_RunProgram_then_distanceTravelledEquals20()
+        {
+            string[] args = new[] {"location:0,0,E", "obstacles:2,0", "map", "maxDistance:5"};
+
+            RoverSettings roverSettings = _inputProcesser.GetRoverSettings(args);
+            PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);
+            Engine _engine = new Engine(roverSettings, planetSettings);
+            
+            Report report = _engine.RunProgram();
+            
+            Assert.Equal(5, report.DistanceTravelled);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace MarsRover.Tests
         [Fact]
         public void given_objectiveEqualsMapSurface_and_RoverMeetsObstacle_when_ExecuteCommand_then_commandDoesNotEqualStop()
         {
-            IObjective objective = new MapSurface();
+            IObjective objective = new MapSurface(1000);
         
             Command receivedCommand = objective.ReceiveCommandForObstacle();
         
@@ -27,7 +27,7 @@ namespace MarsRover.Tests
         [Fact]
         public void given_objectiveEqualsDestroyer_and_RoverMeetsObstacle_when_ExecuteCommand_then_commandDoesNotEqualStop()
         {
-            IObjective objective = new Destroyer();
+            IObjective objective = new Destroyer(1000);
         
             Command receivedCommand = objective.ReceiveCommandForObstacle();
         

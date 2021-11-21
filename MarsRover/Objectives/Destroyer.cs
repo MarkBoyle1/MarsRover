@@ -5,6 +5,12 @@ namespace MarsRover.Objectives
     public class Destroyer : IObjective
     {
         private Random random = new Random();
+        private int _maxDistance;
+
+        public Destroyer(int maxDistance)
+        {
+            _maxDistance = maxDistance;
+        }
         public Command ReceiveCommand()
         {
             int randomNumber = random.Next(1, 11);
@@ -36,9 +42,9 @@ namespace MarsRover.Objectives
             return new Command(RoverInstruction.TurnRight);
         }
 
-        public bool CheckForCompletion(MarsSurface surface)
+        public bool CheckForCompletion(Report report)
         {
-            return surface.ObstacleCount == 0;
+            return report.CurrentSurface.ObstacleCount == 0 || report.DistanceTravelled == _maxDistance;
         }
     }
 }

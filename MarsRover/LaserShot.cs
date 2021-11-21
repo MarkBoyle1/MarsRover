@@ -16,6 +16,25 @@ namespace MarsRover
             _output = output;
             _marsSurfaceBuilder = marsSurfaceBuilder;
         }
+        
+        public MarsSurface FireGun(MarsSurface surface, Coordinate coordinate, Direction direction)
+        {
+            string symbolForOldLocation =
+                _utility.SpaceNeedsToBeCleared(surface, coordinate, _utility.DetermineDirectionOfRover(direction));
+            surface = _marsSurfaceBuilder.UpdateSurface(surface, coordinate, symbolForOldLocation);
+            
+            LaserBeam laserBeam = UpdateLaserShot(surface, coordinate, direction);
+            surface = _marsSurfaceBuilder.UpdateSurface(surface, laserBeam.Coordinate, laserBeam.Symbol);
+            
+            _output.DisplaySurface(surface, 100);
+            
+            if (laserBeam.Symbol == DisplaySymbol.FreeSpace)
+            {
+                return surface;
+            }
+
+            return FireGun(surface, laserBeam.Coordinate, direction);
+        }
 
         private void CauseExplosion(MarsSurface surface, Coordinate coordinate)
         {

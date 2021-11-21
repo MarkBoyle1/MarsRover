@@ -28,7 +28,7 @@ namespace MarsRover.Objectives
             return new Command(RoverInstruction.Stop);
         }
         
-        public bool CheckForCompletion(MarsSurface surface)
+        public bool CheckForCompletion(Report report)
         {
             return false;
         }

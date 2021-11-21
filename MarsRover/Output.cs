@@ -65,8 +65,15 @@ namespace MarsRover
         {
             Console.WriteLine(OutputMessages.MissionComplete);
             Console.WriteLine(OutputMessages.DistanceTravelled + report.DistanceTravelled);
-            Console.WriteLine(OutputMessages.ObstaclesDiscovered + report.ObstaclesDiscovered);
-            Console.WriteLine(OutputMessages.ObstaclesDestroyed + report.ObstaclesDestroyed);
+            if (report.ObstaclesDiscovered > 0)
+            {
+                Console.WriteLine(OutputMessages.ObstaclesDiscovered + report.ObstaclesDiscovered);
+            }
+
+            if (report.ObstaclesDestroyed > 0)
+            {
+                Console.WriteLine(OutputMessages.ObstaclesDestroyed + report.ObstaclesDestroyed);
+            }
         }
     }
 }

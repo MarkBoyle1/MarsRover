@@ -4,6 +4,6 @@ namespace MarsRover.Objectives
     {
         Command ReceiveCommand();
         Command ReceiveCommandForObstacle();
-        bool CheckForCompletion(MarsSurface surface);
+        bool CheckForCompletion(Report report);
     }
 }
