@@ -33,7 +33,7 @@ namespace MarsRover.Tests
         [Fact]
         public void given_roverWillMeetObstacleAtTwoTwo_when_RunProgram_then_returns_LocationEqualsTwoOne()
         {
-            string[] args = new[] {"location:1,1,N", "commands:r,f,r,f,f", "obstacles:2,2", "mode:explore"};
+            string[] args = new[] {"location:1,1,n", "commands:r,f,r,f,f", "obstacles:2,2", "mode:explore"};
             
             RoverSettings roverSettings = _inputProcesser.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);
@@ -49,7 +49,7 @@ namespace MarsRover.Tests
         [Fact]
         public void given_roverLocationEqualsZeroZeroNorth_when_MoveForward_then_return_ZeroNineNorth()
         {
-            string[] args = new[] {"location:0,0,N", "commands:f", "obstacles:8,8", "mode:explore"};
+            string[] args = new[] {"location:0,0,n", "commands:f", "obstacles:8,8", "mode:explore"};
 
             RoverSettings roverSettings = _inputProcesser.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);
@@ -65,7 +65,7 @@ namespace MarsRover.Tests
         [Fact]
         public void given_roverLocationEqualsZeroNineSouth_when_MoveForward_then_return_ZeroZeroSouth()
         {
-           string[] args = new[] {"location:0,19,S", "commands:f", "obstacles:8,8", "mode:explore"};
+           string[] args = new[] {"location:0,19,s", "commands:f", "obstacles:8,8", "mode:explore"};
 
            RoverSettings roverSettings = _inputProcesser.GetRoverSettings(args);
            PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);
@@ -81,7 +81,7 @@ namespace MarsRover.Tests
         [Fact]
         public void given_roverLocationEqualsNineNineEast_when_MoveForward_then_return_ZeroNineEast()
         {
-            string[] args = new[] {"location:19,19,E", "commands:f", "obstacles:2,2", "mode:explore"};
+            string[] args = new[] {"location:19,19,e", "commands:f", "obstacles:2,2", "mode:explore"};
 
             RoverSettings roverSettings = _inputProcesser.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);
@@ -110,7 +110,7 @@ namespace MarsRover.Tests
         [Fact]
         public void given_roverMeetsObstaclesBeforeFinishingCommands_when_RunProgram_then_RoverStopsAtObstacle()
         {
-            string[] args = new[] {"location:0,0,E", "commands:f,f,f,r,f", "obstacles:2,0", "mode:explore"};
+            string[] args = new[] {"location:0,0,e", "commands:f,f,f,r,f", "obstacles:2,0", "mode:explore"};
 
             RoverSettings roverSettings = _inputProcesser.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);
@@ -126,7 +126,7 @@ namespace MarsRover.Tests
         [Fact]
         public void given_maxDistanceEquals5_when_RunProgram_then_distanceTravelledEquals5()
         {
-            string[] args = new[] {"location:0,0,E", "obstacles:2,0", "mode:map", "maxdistance:5"};
+            string[] args = new[] {"location:0,0,e", "obstacles:2,0", "mode:map", "maxdistance:5"};
 
             RoverSettings roverSettings = _inputProcesser.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);

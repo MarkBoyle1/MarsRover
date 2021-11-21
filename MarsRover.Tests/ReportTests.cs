@@ -61,7 +61,7 @@ namespace MarsRover.Tests
         [Fact]
         public void given_commandsContainsFourf_when_RunProgram_then_DistanceTravelledEquals4()
         {
-            string[] args = new[] {"location:0,0,E", "commands:f,f,f,r,f", "obstacles:5,0", "mode:explore"};
+            string[] args = new[] {"location:0,0,e", "commands:f,f,f,r,f", "obstacles:5,0", "mode:explore"};
 
             RoverSettings roverSettings = _inputProcessor.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcessor.GetPlanetSettings(args);

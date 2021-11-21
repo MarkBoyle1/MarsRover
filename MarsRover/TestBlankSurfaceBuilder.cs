@@ -2,9 +2,9 @@ using System.Linq;
 
 namespace MarsRover
 {
-    public class TestMarsSurfaceBuilder : IMarsSurfaceBuilder
+    public class TestBlankSurfaceBuilder : IMarsSurfaceBuilder
     {
-        private int SizeOfGrid = 20;
+        private int SizeOfGrid = 4;
         public MarsSurface CreateSurface()
         {
             string[][] surface = new string[4][];
@@ -13,8 +13,7 @@ namespace MarsRover
                     x => new string[4].Select(x => DisplaySymbol.FreeSpace).ToArray()
                 )
                 .ToArray();
-
-            surface[2][3] = DisplaySymbol.Obstacle;
+            
             return new MarsSurface(surface, 1, 16);
         }
         

@@ -1,4 +1,6 @@
-{"location:" : "15,15,W",
+{
+  "location:" : "1,1,w",
   "mode:" : "map",
-  "maxDistance:" : "10"
+  "maxdistance:" : "100",
+  "gridsize:" : "20"
 }

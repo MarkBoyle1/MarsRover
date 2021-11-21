@@ -6,7 +6,7 @@ namespace MarsRover
 {
     public class MarsSurfaceBuilder : IMarsSurfaceBuilder
     {
-        private int SizeOfGrid = 20;
+        private int SizeOfGrid;
         private const int PercentageOfObstacles = 10;
         private int AreasDiscovered;
         private List<Coordinate> ObstacleList; 

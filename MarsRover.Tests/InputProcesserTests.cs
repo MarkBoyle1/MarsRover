@@ -9,7 +9,7 @@ namespace MarsRover.Tests
         [Fact]
         public void given_argsEqualsLocationOneOneN_when_GetRoverSettings_then_DirectionFacingEqualsNorth()
         {
-            string[] args = new[] {"location:1,2,N"};
+            string[] args = new[] {"location:1,2,n"};
 
             RoverSettings roverSettings = _inputProcessor.GetRoverSettings(args);
             

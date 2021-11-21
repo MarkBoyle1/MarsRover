@@ -7,7 +7,7 @@ namespace MarsRover.Tests
     public class ObjectiveTests
     {
         private RoverLocation _defaultLocation;
-        private IMarsSurfaceBuilder _marsSurfaceBuilder = new TestMarsSurfaceBuilder();
+        private IMarsSurfaceBuilder _marsSurfaceBuilder = new TestBlankSurfaceBuilder();
         
         public ObjectiveTests()
         {

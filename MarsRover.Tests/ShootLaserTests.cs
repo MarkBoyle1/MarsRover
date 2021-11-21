@@ -16,7 +16,7 @@ namespace MarsRover.Tests
         [Fact]
         public void given_obstacleAtFiveOne_and_roverAtOneOneEast_when_ShootLaser_then_FiveOneEqualsFreeSpace()
         {
-            string[] args = new[] {"location:1,1,E", "obstacles:1,1", "mode:destroyer"};
+            string[] args = new[] {"location:1,1,e", "obstacles:1,1", "mode:destroyer"};
             
             RoverSettings roverSettings = _inputProcessor.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcessor.GetPlanetSettings(args);

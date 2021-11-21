@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MarsRover.Exceptions;
 using MarsRover.Objectives;
 using Newtonsoft.Json.Linq;
 
@@ -9,16 +10,18 @@ namespace MarsRover
 {
     public class InputProcessor
     {
-        public const string TurnLeft = "l";
-        public const string TurnRight = "r";
-        public const string MoveForward = "f";
-        public const string MoveBack = "b";
-        public const string North = "n";
-        public const string East = "e";
-        public const string South = "s";
-        public const string West = "w";
+        private const string TurnLeft = "l";
+        private const string TurnRight = "r";
+        private const string MoveForward = "f";
+        private const string MoveBack = "b";
+        private const string North = "n";
+        private const string East = "e";
+        private const string South = "s";
+        private const string West = "w";
         private string[] DefaultCommands = new string[] {"r", "f", "f", "r", "f", "f", "l", "b"};
-        private int DefaultSizeOfGrid = 20;
+        private DefaultSettings _defaultSettings = new DefaultSettings();
+        private const string DefaultJSONFilePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/JSONInput.json";
+        private const string DefaultCSVFilePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/MarsRoverInput.csv";
 
         public RoverSettings GetRoverSettings(string[] args)
         {
@@ -78,7 +81,7 @@ namespace MarsRover
                 case MoveBack:
                     return RoverInstruction.MoveBack;
                 default:
-                    throw new Exception();
+                    throw new InvalidInstructionException(input);
             }
         }
 
@@ -116,7 +119,7 @@ namespace MarsRover
                 case West:
                     return Direction.West;
                 default:
-                    throw new Exception();
+                    throw new InvalidDirectionException(direction);
             }
         }
 
@@ -154,7 +157,7 @@ namespace MarsRover
                 }
             }
 
-            return 100;
+            return DefaultSettings.DefaultMaxDistance;
         }
 
         private IObjective DetermineObjective(string[] args, List<Command> commands, int maxDistance)
@@ -187,7 +190,7 @@ namespace MarsRover
                 }
             }
 
-            return new Destroyer(maxDistance);
+            return _defaultSettings.DefaultMode;
         }
 
         private int GetSizeOfGrid(string[] args)
@@ -200,7 +203,7 @@ namespace MarsRover
                 }
             }
 
-            return DefaultSizeOfGrid;
+            return DefaultSettings.DefaultGridSize;
         }
 
         private IMarsSurfaceBuilder GetTypeOfBuilder(string[] args, int sizeOfGrid, List<Coordinate> obstacles)
@@ -231,7 +234,7 @@ namespace MarsRover
             
             if (args.Contains("jsonfile") || Path.GetExtension(filePath) == ".json")
             {
-                filePath = string.IsNullOrEmpty(filePath) ? @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/JSONInput.json" : filePath;
+                filePath = string.IsNullOrEmpty(filePath) ? DefaultSettings.DefaultJSONFilePath : filePath;
                 
                 var myJsonString = File.ReadAllText(filePath);
                 var myJObject = JObject.Parse(myJsonString);
@@ -244,7 +247,7 @@ namespace MarsRover
             }
             else if (args.Contains("csvfile") || Path.GetExtension(filePath) == ".csv")
             {
-                filePath = string.IsNullOrEmpty(filePath) ? @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/MarsRoverInput.csv" : filePath;
+                filePath = string.IsNullOrEmpty(filePath) ? DefaultSettings.DefaultCSVFilePath : filePath;
                 args = File.ReadAllLines(filePath);
                 updatedArgs = args.Select(x => x.Trim('"')).ToList();
             }
