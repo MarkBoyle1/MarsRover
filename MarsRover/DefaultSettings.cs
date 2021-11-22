@@ -5,10 +5,10 @@ namespace MarsRover
 {
     public class DefaultSettings
     {
-        public RoverLocation DefaultLocation;
-        public string[] DefaultCommands;
-        public List<Coordinate> DefaultObstacles;
-        public IObjective DefaultMode;
+        // public RoverLocation DefaultLocation;
+        // public string[] DefaultCommands;
+        // public List<Coordinate> DefaultObstacles;
+        // public IObjective DefaultMode;
         public const int DefaultMaxDistance = 100;
         public const int DefaultGridSize = 20;
         public const int DefaultPercentageOfObstacles = 20;
@@ -18,9 +18,9 @@ namespace MarsRover
         public DefaultSettings()
         {
             // DefaultLocation = new RoverLocation(new Coordinate(1,1), Direction.North);
-            DefaultCommands = new string[] {"r", "f", "f", "r", "f", "f", "l", "b"};
-            DefaultObstacles = new List<Coordinate>();
-            DefaultMode = new Destroyer(DefaultMaxDistance);
+            // DefaultCommands = new string[] {"r", "f", "f", "r", "f", "f", "l", "b"};
+            // DefaultObstacles = new List<Coordinate>();
+            // DefaultMode = new Destroyer(DefaultMaxDistance);
         }
     }
 }

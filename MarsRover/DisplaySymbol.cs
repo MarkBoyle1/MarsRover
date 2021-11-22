@@ -12,7 +12,5 @@ namespace MarsRover
         public const string LaserVertical = "|";
         public const string LaserHorizontal = "\u2015";
         public const string Explosion= "*";
-
-
     }
 }

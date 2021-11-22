@@ -23,7 +23,6 @@ namespace MarsRover
             else
             {
                 behaviour = new Move(command.Instruction);
-
             }
 
             return behaviour.ExecuteCommand(location);

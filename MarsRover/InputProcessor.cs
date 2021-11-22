@@ -20,6 +20,7 @@ namespace MarsRover
         private const string South = "s";
         private const string West = "w";
         private string[] DefaultCommands = new string[] {"r", "f", "f", "r", "f", "f", "l", "b"};
+        private IObjective DefaultMode = new Destroyer(100);
         private DefaultSettings _defaultSettings = new DefaultSettings();
         private const string DefaultJSONFilePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/JSONInput.json";
         private const string DefaultCSVFilePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/MarsRoverInput.csv";
@@ -204,7 +205,7 @@ namespace MarsRover
             }
             
 
-            return _defaultSettings.DefaultMode;
+            return DefaultMode;
         }
 
         private int GetSizeOfGrid(string[] args)

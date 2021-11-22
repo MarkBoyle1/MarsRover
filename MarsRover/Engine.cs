@@ -15,6 +15,9 @@ namespace MarsRover
         private PlanetSettings _planetSettings;
         private MarsSurface _initialSurface;
         private int _distancedTravelled;
+        private int RoverSpeed = 500;
+        private int ExplosionSpeed = 300;
+        private int LaserSpeed= 200;
 
         public Engine(RoverSettings roverSettings, PlanetSettings planetSettings)
         {
@@ -35,7 +38,7 @@ namespace MarsRover
             MarsSurface surface = _marsSurfaceBuilder.CreateSurface();
             surface = _marsSurfaceBuilder.UpdateSurface(surface, roverLocation.Coordinate, roverLocation.Symbol);
             _initialSurface = surface;
-            _output.DisplaySurface(surface, 500);
+            _output.DisplaySurface(surface, RoverSpeed);
 
             Report report = _reportBuilder.CreateReport(_distancedTravelled, surface, surface, roverLocation);
             
@@ -67,16 +70,11 @@ namespace MarsRover
             
                 if (command.Instruction == RoverInstruction.ShootLaser)
                 {
-                    // MarsSurface surface = _laserShot.FireGun(report.CurrentSurface, report.FinalLocation.Coordinate, report.FinalLocation.DirectionFacing);
-                    // report = _reportBuilder.CreateReport(_distancedTravelled, _initialSurface, surface, report.FinalLocation);
                     report = FireLaser(report);
                 }
                 else
                 {
                     newLocation = _roverBehaviour.ExecuteCommand(report.FinalLocation, command, report.CurrentSurface);
-                    // Coordinate validatedCoordinate = _validations.WrapAroundPlanetIfRequired(newLocation.Coordinate);
-                    newLocation = new RoverLocation(newLocation.Coordinate, newLocation.DirectionFacing,
-                        newLocation.Symbol);
 
                     while (_validations.LocationContainsObstacle(report.CurrentSurface, newLocation))
                     {
@@ -94,7 +92,7 @@ namespace MarsRover
                     report = MoveRover(report.CurrentSurface, report.FinalLocation, newLocation);
                 }
                 
-                _output.DisplaySurface(report.CurrentSurface, 500);
+                _output.DisplaySurface(report.CurrentSurface, RoverSpeed);
                 
                 return report;
         }
@@ -149,16 +147,16 @@ namespace MarsRover
                 
                 if (newLocation.Symbol == DisplaySymbol.Explosion)
                 {
-                    _output.DisplaySurface(surface, 300);
-                    _output.DisplaySurface(surface, 300);
-                    _output.DisplaySurface(surface, 300);
+                    _output.DisplaySurface(surface, ExplosionSpeed);
+                    _output.DisplaySurface(surface, ExplosionSpeed);
+                    _output.DisplaySurface(surface, ExplosionSpeed);
                     surface =
                         _marsSurfaceBuilder.UpdateSurface(surface, newLocation.Coordinate, DisplaySymbol.FreeSpace);
                     return _reportBuilder.CreateReport(report.DistanceTravelled, _initialSurface, surface,
                         report.FinalLocation);
                 }
                 
-                _output.DisplaySurface(surface, 100);
+                _output.DisplaySurface(surface, LaserSpeed);
             }
             
             return _reportBuilder.CreateReport(report.DistanceTravelled, _initialSurface, surface,
