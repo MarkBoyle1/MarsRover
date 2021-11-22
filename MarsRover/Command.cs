@@ -10,8 +10,5 @@ namespace MarsRover
         {
             Instruction = input;
         }
-
-        
-
     }
 }

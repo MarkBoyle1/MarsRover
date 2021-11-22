@@ -1,29 +1,50 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using MarsRover.Exceptions;
 using MarsRover.Objectives;
+using Newtonsoft.Json.Linq;
 
 namespace MarsRover
 {
     public class InputProcessor
     {
-        public const string TurnLeft = "l";
-        public const string TurnRight = "r";
-        public const string MoveForward = "f";
-        public const string MoveBack = "b";
-        public const string North = "N";
-        public const string East = "E";
-        public const string South = "S";
-        public const string West = "W";
+        private const string TurnLeft = "l";
+        private const string TurnRight = "r";
+        private const string MoveForward = "f";
+        private const string MoveBack = "b";
+        private const string Shoot = "s";
+        private const string North = "n";
+        private const string East = "e";
+        private const string South = "s";
+        private const string West = "w";
         private string[] DefaultCommands = new string[] {"r", "f", "f", "r", "f", "f", "l", "b"};
+        private IObjective DefaultMode = new Destroyer(100);
+        private const string DefaultJSONFilePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/JSONInput.json";
+        private const string DefaultCSVFilePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/MarsRoverInput.csv";
+        private const string LocationTag = "location:";
+        private const string ModeTag = "mode:";
+        private const string CommandsTag = "commands:";
+        private const string ObstaclesTag = "obstacles:";
+        private const string FilePathTag = "filepath:";
+        private const string GridSizeTag = "gridsize:";
+        private const string MaxDistanceTag = "maxdistance:";
+        private const string JSONTag = "jsonfile";
+        private const string CSVTag = "csvfile";
+        private const string MapObjective = "mode:map";
+        private const string ExploreObjective = "mode:explore";
+        private const string DestroyerObjective = "mode:destroyer";
+        
 
         public RoverSettings GetRoverSettings(string[] args)
         {
-            RoverLocation roverLocation = DetermineStartingLocation(args);
+            ObjectLocation objectLocation = DetermineStartingLocation(args);
             List<Command> commands = GetListOfCommands(args);
-            IObjective objective = DetermineObjective(args, commands);
+            int maxDistance = GetMaxDistance(args);
+            IObjective objective = DetermineObjective(args, commands, maxDistance);
 
-            return new RoverSettings(roverLocation, commands, objective);
+            return new RoverSettings(objectLocation, commands, objective);
         }
 
         public PlanetSettings GetPlanetSettings(string[] args)
@@ -35,14 +56,14 @@ namespace MarsRover
             return new PlanetSettings(sizeOfGrid, obstacles, marsSurfaceBuilder);
         }
 
-        public List<Command> GetListOfCommands(string[] args)
+        private List<Command> GetListOfCommands(string[] args)
         {
             List<Command> commandList = new List<Command>();
             string[] commands = DefaultCommands;
 
             foreach (var argument in args)
             {
-                if (argument.StartsWith("commands:"))
+                if (argument.StartsWith(CommandsTag))
                 {
                     commands = argument.Remove(0,9).Split(',', StringSplitOptions.RemoveEmptyEntries);
                 }
@@ -73,19 +94,21 @@ namespace MarsRover
                     return RoverInstruction.MoveForward;
                 case MoveBack:
                     return RoverInstruction.MoveBack;
+                case Shoot:
+                    return RoverInstruction.ShootLaser;
                 default:
-                    throw new Exception();
+                    throw new InvalidInstructionException(input);
             }
         }
 
-        public RoverLocation DetermineStartingLocation(string[] args)
+        private ObjectLocation DetermineStartingLocation(string[] args)
         {
             Coordinate coordinate = new Coordinate(1, 1);
-            Direction directionfacing = Direction.North;
+            Direction directionfacing = Direction.South;
             
             foreach (var argument in args)
             {
-                if (argument.StartsWith("location:"))
+                if (argument.StartsWith(LocationTag))
                 {
                     string[] startingLocation = argument.Remove(0, 9).Split(',', StringSplitOptions.RemoveEmptyEntries).ToArray();
                     
@@ -94,10 +117,9 @@ namespace MarsRover
                     coordinate = new Coordinate(xCoordinate, yCoordinate);
                     directionfacing = DetermineDirection(startingLocation[2]);
                 }
-                
             }
 
-            return new RoverLocation(coordinate, directionfacing);
+            return new ObjectLocation(coordinate, directionfacing);
         }
 
         private Direction DetermineDirection(string direction)
@@ -113,7 +135,7 @@ namespace MarsRover
                 case West:
                     return Direction.West;
                 default:
-                    throw new Exception();
+                    throw new InvalidDirectionException(direction);
             }
         }
 
@@ -124,7 +146,7 @@ namespace MarsRover
             
             foreach (var argument in args)
             {
-                if (argument.StartsWith("obstacles:"))
+                if (argument.StartsWith(ObstaclesTag))
                 {
                     obstacles = argument.Remove(0,10).Split(';', StringSplitOptions.RemoveEmptyEntries);
                 }
@@ -141,45 +163,115 @@ namespace MarsRover
             return obstacleCoordinates;
         }
 
-        private IObjective DetermineObjective(string[] args, List<Command> commands)
+        private int GetMaxDistance(string[] args)
         {
             foreach (var argument in args)
             {
-                if (argument == "map")
+                if (argument.StartsWith(MaxDistanceTag))
                 {
-                    return new MapSurface();
-                }
-
-                if (argument == "explore")
-                {
-                    return new FollowCommands(commands);
-                }
-                
-                if (argument == "destroyer")
-                {
-                    return new Destroyer();
+                     return Convert.ToInt32(argument.Remove(0,12));
                 }
             }
 
-            return new MapSurface();
+            return DefaultSettings.DefaultMaxDistance;
+        }
+
+        private IObjective DetermineObjective(string[] args, List<Command> commands, int maxDistance)
+        {
+            string objective = String.Empty;
+            
+            foreach (var argument in args)
+            {
+                if (argument.StartsWith(ModeTag))
+                {
+                    objective = argument;
+                }
+            }
+            
+            if (objective == MapObjective)
+            {
+                return new MapSurface(maxDistance);
+            }
+
+            if (objective == ExploreObjective)
+            {
+                return new FollowCommands(commands);
+            }
+            
+            if (objective == DestroyerObjective)
+            {
+                return new Destroyer(maxDistance);
+            }
+            
+
+            return DefaultMode;
         }
 
         private int GetSizeOfGrid(string[] args)
         {
-            return 20;
+            foreach (var argument in args)
+            {
+                if (argument.StartsWith(GridSizeTag))
+                {
+                    return Convert.ToInt32(argument.Remove(0,9));
+                }
+            }
+
+            return DefaultSettings.DefaultGridSize;
         }
 
         private IMarsSurfaceBuilder GetTypeOfBuilder(string[] args, int sizeOfGrid, List<Coordinate> obstacles)
         {
             foreach (var argument in args)
             {
-                if (argument == "map")
+                if (argument == MapObjective)
                 {
                     return new MappingSurfaceBuilder(sizeOfGrid);
                 }
             }
 
-            return new MarsSurfaceBuilder(obstacles);
+            return new MarsSurfaceBuilder(obstacles, sizeOfGrid);
+        }
+
+        public string[] GetInputFromFile(string[] args)
+        {
+            List<string> updatedArgs = new List<string>();
+            string filePath = String.Empty;
+
+            foreach (var argument in args)
+            {
+                if (argument.StartsWith(FilePathTag))
+                {
+                    filePath = argument.Remove(0,9);
+                }
+            }
+            
+            if (args.Contains(JSONTag) || Path.GetExtension(filePath) == ".json")
+            {
+                filePath = string.IsNullOrEmpty(filePath) ? DefaultJSONFilePath : filePath;
+                
+                var myJsonString = File.ReadAllText(filePath);
+                var myJObject = JObject.Parse(myJsonString);
+                var properties = myJObject.Properties();
+            
+                foreach (var p in properties)
+                {
+                    updatedArgs.Add(p.Name + p.Value);
+                }
+            }
+            else if (args.Contains(CSVTag) || Path.GetExtension(filePath) == ".csv")
+            {
+                filePath = string.IsNullOrEmpty(filePath) ? DefaultCSVFilePath : filePath;
+                args = File.ReadAllLines(filePath);
+                updatedArgs = args.Select(x => x.Trim('"')).ToList();
+            }
+
+            if (updatedArgs.Count == 0)
+            {
+                return args;
+            }
+
+            return updatedArgs.ToArray();
         }
     }
 }

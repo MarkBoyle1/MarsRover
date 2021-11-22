@@ -3,7 +3,7 @@ namespace MarsRover
     public class ReportBuilder
     {
         public Report CreateReport(int distancedTravelled, MarsSurface initialSurface, MarsSurface finalSurface,
-            RoverLocation finalLocation)
+            ObjectLocation finalLocation)
         {
             int obstaclesDiscovered = finalSurface.ObstacleCount - initialSurface.ObstacleCount;
             int obstaclesDestroyed = initialSurface.ObstacleCount - finalSurface.ObstacleCount;

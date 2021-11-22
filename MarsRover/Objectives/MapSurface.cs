@@ -1,4 +1,3 @@
-
 using System;
 
 namespace MarsRover.Objectives
@@ -6,7 +5,13 @@ namespace MarsRover.Objectives
     public class MapSurface : IObjective
     {
         private Random random = new Random();
-        public Command ReceiveCommand(MarsSurface surface, RoverLocation location)
+        private int _maxDistance;
+
+        public MapSurface(int maxDistance)
+        {
+            _maxDistance = maxDistance;
+        }
+        public Command ReceiveCommand()
         {
             if (random.Next(1, 11) > 1)
             {
@@ -24,6 +29,11 @@ namespace MarsRover.Objectives
             }
             
             return new Command(RoverInstruction.TurnRight);
+        }
+        
+        public bool CheckForCompletion(Report report)
+        {
+            return report.CurrentSurface.AreasDiscovered == (report.CurrentSurface.SizeOfGrid * report.CurrentSurface.SizeOfGrid) || report.DistanceTravelled == _maxDistance;
         }
     }
 }

@@ -1,0 +1,6 @@
+"location:1,1,s"
+mode:explore
+"commands:r,l,f,f,f,r,b,f,f,f,f"
+"obstacles:3,3;4,5;6,7"
+maxdistance:100
+size:20

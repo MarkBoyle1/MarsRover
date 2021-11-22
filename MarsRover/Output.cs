@@ -1,20 +1,22 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading;
 
 namespace MarsRover
 {
-    public class Output
+    public class Output : IOutput
     {
         private ConsoleColor _explosionColour = ConsoleColor.Yellow;
+        
         public void DisplaySurface(MarsSurface surface, int threadSpeed)
         {
             Console.OutputEncoding = Encoding.UTF8;
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
 
-            for(int row = 0; row < 20; row++)
+            for(int row = 0; row < surface.SizeOfGrid; row++)
             {
                 foreach (var point in surface.Surface[row])
                 {
@@ -50,6 +52,7 @@ namespace MarsRover
         public void DisplayMessage(string message)
         {
             Console.WriteLine(message);
+            Thread.Sleep(2000);
         }
 
         private ConsoleColor SwapExplosionColour(ConsoleColor currentColour)
@@ -61,8 +64,37 @@ namespace MarsRover
         {
             Console.WriteLine(OutputMessages.MissionComplete);
             Console.WriteLine(OutputMessages.DistanceTravelled + report.DistanceTravelled);
-            Console.WriteLine(OutputMessages.ObstaclesDiscovered + report.ObstaclesDiscovered);
-            Console.WriteLine(OutputMessages.ObstaclesDestroyed + report.ObstaclesDestroyed);
+            if (report.ObstaclesDiscovered > 0)
+            {
+                Console.WriteLine(OutputMessages.ObstaclesDiscovered + report.ObstaclesDiscovered);
+            }
+
+            if (report.ObstaclesDestroyed > 0)
+            {
+                Console.WriteLine(OutputMessages.ObstaclesDestroyed + report.ObstaclesDestroyed);
+            }
+        }
+
+        public void CreateReportFile(Report report)
+        {
+            List<string> reportData = new List<string>()
+            {
+                "Mission Completed at:" + DateTime.Now,
+                "DistanceTravelled:" + report.DistanceTravelled,
+            };
+
+            if (report.ObstaclesDestroyed > 0)
+            {
+                reportData.Add("ObstaclesDestroyed:" + report.ObstaclesDestroyed);
+            }
+            
+            if (report.ObstaclesDiscovered > 0)
+            {
+                reportData.Add("ObstaclesDiscovered:" + report.ObstaclesDiscovered);
+            }
+
+            string filePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/MissionReport.csv";
+            File.WriteAllLinesAsync(filePath, reportData);
         }
     }
 }

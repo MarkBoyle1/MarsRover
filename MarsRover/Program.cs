@@ -1,7 +1,5 @@
-﻿
-using System;
-using System.Text;
-using Microsoft.VisualBasic;
+﻿using System;
+using System.IO;
 
 namespace MarsRover
 {
@@ -10,6 +8,20 @@ namespace MarsRover
         static void Main(string[] args)
         {
             InputProcessor _inputProcessor = new InputProcessor();
+            IOutput _output = new Output();
+            
+            //Convert input into lowercase
+            args = Array.ConvertAll(args, a => a.ToLower());
+            
+            try
+            {
+                args = _inputProcessor.GetInputFromFile(args);
+            }
+            catch (FileNotFoundException e)
+            {
+                _output.DisplayMessage(e.Message);
+                _output.DisplayMessage(OutputMessages.FileNotFound);
+            }
             
             RoverSettings roverSettings = _inputProcessor.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcessor.GetPlanetSettings(args);

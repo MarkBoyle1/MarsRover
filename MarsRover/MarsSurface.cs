@@ -4,10 +4,14 @@ namespace MarsRover
     {
         public string[][] Surface { get; }
         public int ObstacleCount { get; }
-        public MarsSurface(string[][] surface, int obstacleCount)
+        public int AreasDiscovered { get; }
+        public int SizeOfGrid { get; }
+        public MarsSurface(string[][] surface, int obstacleCount, int areasDiscovered)
         {
             Surface = surface;
             ObstacleCount = obstacleCount;
+            AreasDiscovered = areasDiscovered;
+            SizeOfGrid = surface[0].Length;
         }
 
         public string GetPoint(Coordinate coordinate)

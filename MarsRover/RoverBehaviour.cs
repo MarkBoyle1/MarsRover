@@ -1,11 +1,10 @@
-using System.Collections.Generic;
 using MarsRover.Behaviours;
 
 namespace MarsRover
 {
     public class RoverBehaviour
     {
-        public RoverLocation ExecuteCommand(RoverLocation location, Command command)
+        public ObjectLocation ExecuteCommand(ObjectLocation location, Command command, MarsSurface surface)
         {
             IBehaviour behaviour;
 
@@ -13,10 +12,17 @@ namespace MarsRover
             {
                 behaviour = new Turn(command.Instruction);
             }
+            else if (command.Instruction == RoverInstruction.ShootLaser)
+            {
+                behaviour = new Shoot(surface);
+            }
+            else if (command.Instruction == RoverInstruction.LookAhead)
+            {
+                behaviour = new LookAhead(surface);
+            }
             else
             {
                 behaviour = new Move(command.Instruction);
-
             }
 
             return behaviour.ExecuteCommand(location);
