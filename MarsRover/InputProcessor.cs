@@ -21,7 +21,6 @@ namespace MarsRover
         private const string West = "w";
         private string[] DefaultCommands = new string[] {"r", "f", "f", "r", "f", "f", "l", "b"};
         private IObjective DefaultMode = new Destroyer(100);
-        private DefaultSettings _defaultSettings = new DefaultSettings();
         private const string DefaultJSONFilePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/JSONInput.json";
         private const string DefaultCSVFilePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/MarsRoverInput.csv";
         private const string LocationTag = "location:";
@@ -40,12 +39,12 @@ namespace MarsRover
 
         public RoverSettings GetRoverSettings(string[] args)
         {
-            RoverLocation roverLocation = DetermineStartingLocation(args);
+            ObjectLocation objectLocation = DetermineStartingLocation(args);
             List<Command> commands = GetListOfCommands(args);
             int maxDistance = GetMaxDistance(args);
             IObjective objective = DetermineObjective(args, commands, maxDistance);
 
-            return new RoverSettings(roverLocation, commands, objective);
+            return new RoverSettings(objectLocation, commands, objective);
         }
 
         public PlanetSettings GetPlanetSettings(string[] args)
@@ -102,7 +101,7 @@ namespace MarsRover
             }
         }
 
-        private RoverLocation DetermineStartingLocation(string[] args)
+        private ObjectLocation DetermineStartingLocation(string[] args)
         {
             Coordinate coordinate = new Coordinate(1, 1);
             Direction directionfacing = Direction.South;
@@ -120,7 +119,7 @@ namespace MarsRover
                 }
             }
 
-            return new RoverLocation(coordinate, directionfacing);
+            return new ObjectLocation(coordinate, directionfacing);
         }
 
         private Direction DetermineDirection(string direction)
@@ -249,7 +248,7 @@ namespace MarsRover
             
             if (args.Contains(JSONTag) || Path.GetExtension(filePath) == ".json")
             {
-                filePath = string.IsNullOrEmpty(filePath) ? DefaultSettings.DefaultJSONFilePath : filePath;
+                filePath = string.IsNullOrEmpty(filePath) ? DefaultJSONFilePath : filePath;
                 
                 var myJsonString = File.ReadAllText(filePath);
                 var myJObject = JObject.Parse(myJsonString);
@@ -262,7 +261,7 @@ namespace MarsRover
             }
             else if (args.Contains(CSVTag) || Path.GetExtension(filePath) == ".csv")
             {
-                filePath = string.IsNullOrEmpty(filePath) ? DefaultSettings.DefaultCSVFilePath : filePath;
+                filePath = string.IsNullOrEmpty(filePath) ? DefaultCSVFilePath : filePath;
                 args = File.ReadAllLines(filePath);
                 updatedArgs = args.Select(x => x.Trim('"')).ToList();
             }

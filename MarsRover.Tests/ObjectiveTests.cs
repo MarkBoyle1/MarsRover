@@ -6,14 +6,6 @@ namespace MarsRover.Tests
 {
     public class ObjectiveTests
     {
-        private RoverLocation _defaultLocation;
-        private IMarsSurfaceBuilder _marsSurfaceBuilder = new TestBlankSurfaceBuilder();
-        
-        public ObjectiveTests()
-        {
-            _defaultLocation = new RoverLocation(new Coordinate(1, 2), Direction.East, DisplaySymbol.RoverEastFacing);
-        }
-        
         [Fact]
         public void given_objectiveEqualsMapSurface_and_RoverMeetsObstacle_when_ExecuteCommand_then_commandDoesNotEqualStop()
         {

@@ -11,7 +11,7 @@ namespace MarsRover.Behaviours
             _movement = new MovementMethods(20);
         }
 
-        public RoverLocation ExecuteCommand(RoverLocation location)
+        public ObjectLocation ExecuteCommand(ObjectLocation location)
         {
             Coordinate newCoordinate = location.Coordinate;
             Direction directionFacing = location.DirectionFacing;
@@ -19,7 +19,7 @@ namespace MarsRover.Behaviours
             newCoordinate = MoveRover(location.Coordinate, directionFacing, _instruction);
             newCoordinate = _movement.WrapAroundPlanetIfRequired(newCoordinate);
             
-            return new RoverLocation(newCoordinate, directionFacing, location.Symbol);
+            return new ObjectLocation(newCoordinate, directionFacing, location.Symbol);
         }
         
         private Coordinate MoveRover(Coordinate coordinate, Direction currentDirection, RoverInstruction instruction)

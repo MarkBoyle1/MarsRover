@@ -3,19 +3,19 @@ using MarsRover.Exceptions;
 
 namespace MarsRover
 {
-    public class RoverLocation
+    public class ObjectLocation
     {
         public Coordinate Coordinate { get; }
         public Direction DirectionFacing { get; }
         public string Symbol { get; }
 
-        public RoverLocation(Coordinate coordinate, Direction directionFacing, string symbol)
+        public ObjectLocation(Coordinate coordinate, Direction directionFacing, string symbol)
         {
             Coordinate = coordinate;
             DirectionFacing = directionFacing;
             Symbol = symbol;
         }
-        public RoverLocation(Coordinate coordinate, Direction directionFacing)
+        public ObjectLocation(Coordinate coordinate, Direction directionFacing)
         {
             Coordinate = coordinate;
             DirectionFacing = directionFacing;

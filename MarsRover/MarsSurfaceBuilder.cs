@@ -7,7 +7,6 @@ namespace MarsRover
     public class MarsSurfaceBuilder : IMarsSurfaceBuilder
     {
         private int SizeOfGrid;
-        private const int PercentageOfObstacles = 10;
         private int AreasDiscovered;
         private List<Coordinate> ObstacleList; 
         private Random random = new Random();
@@ -41,7 +40,7 @@ namespace MarsRover
         private List<Coordinate> GenerateRandomObstacles()
         {
             List<Coordinate> randomObstacles = new List<Coordinate>();
-            int numberOfObstacles = SizeOfGrid * SizeOfGrid / PercentageOfObstacles;
+            int numberOfObstacles = SizeOfGrid * SizeOfGrid / DefaultSettings.DefaultPercentageOfObstacles;
 
             for (int i = 0; i < numberOfObstacles; i++)
             {

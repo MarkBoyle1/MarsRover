@@ -4,7 +4,7 @@ namespace MarsRover
 {
     public class RoverBehaviour
     {
-        public RoverLocation ExecuteCommand(RoverLocation location, Command command, MarsSurface surface)
+        public ObjectLocation ExecuteCommand(ObjectLocation location, Command command, MarsSurface surface)
         {
             IBehaviour behaviour;
 

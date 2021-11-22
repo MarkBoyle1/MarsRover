@@ -2,6 +2,6 @@ namespace MarsRover.Behaviours
 {
     public interface IBehaviour
     {
-        RoverLocation ExecuteCommand(RoverLocation location);
+        ObjectLocation ExecuteCommand(ObjectLocation location);
     }
 }

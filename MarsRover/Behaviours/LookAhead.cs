@@ -17,13 +17,13 @@ namespace MarsRover.Behaviours
             _movement = new MovementMethods(surface.SizeOfGrid);
         }
 
-        public RoverLocation ExecuteCommand(RoverLocation location)
+        public ObjectLocation ExecuteCommand(ObjectLocation location)
         {
             Coordinate nextLocation = _movement.GetNextSpace(location.Coordinate, location.DirectionFacing);
             nextLocation = _movement.WrapAroundPlanetIfRequired(nextLocation);
             string symbol = RevealSpaceInFrontOfRover(_surface, nextLocation);
 
-            return new RoverLocation(nextLocation, location.DirectionFacing, symbol);
+            return new ObjectLocation(nextLocation, location.DirectionFacing, symbol);
         }
         
         public string RevealSpaceInFrontOfRover(MarsSurface surface, Coordinate coordinate)

@@ -12,7 +12,7 @@ namespace MarsRover.Tests
         }
 
         [Fact]
-        public void checkforexplosion()
+        public void given_roverFacingObstacle_and_InstructionEqualsShootLaser_when_ExecuteCommand_then_DisplaySymbolEqualsExplosion()
         {
             string[] args = new[] {"location:1,1,e", "obstacles:2,1", "commands:s", "mode:explore"};
             
@@ -25,13 +25,13 @@ namespace MarsRover.Tests
             
             RoverBehaviour roverBehaviour = new RoverBehaviour();
 
-            RoverLocation roverLocation = roverBehaviour.ExecuteCommand(roverSettings.RoverLocation, new Command(RoverInstruction.ShootLaser), surface);
+            ObjectLocation objectLocation = roverBehaviour.ExecuteCommand(roverSettings.ObjectLocation, new Command(RoverInstruction.ShootLaser), surface);
             
-            Assert.Equal(DisplaySymbol.Explosion, roverLocation.Symbol);
+            Assert.Equal(DisplaySymbol.Explosion, objectLocation.Symbol);
         }
         
         [Fact]
-        public void checkforhorizontalLaser()
+        public void given_roverFacingEast_and_InstructionEqualsShootLaser_when_ExecuteCommand_then_DisplaySymbolEqualsHorizontalLaser()
         {
             string[] args = new[] {"location:1,1,e", "obstacles:5,1", "commands:s", "mode:explore"};
             
@@ -44,13 +44,13 @@ namespace MarsRover.Tests
             
             RoverBehaviour roverBehaviour = new RoverBehaviour();
 
-            RoverLocation roverLocation = roverBehaviour.ExecuteCommand(roverSettings.RoverLocation, new Command(RoverInstruction.ShootLaser), surface);
+            ObjectLocation objectLocation = roverBehaviour.ExecuteCommand(roverSettings.ObjectLocation, new Command(RoverInstruction.ShootLaser), surface);
             
-            Assert.Equal(DisplaySymbol.LaserHorizontal, roverLocation.Symbol);
+            Assert.Equal(DisplaySymbol.LaserHorizontal, objectLocation.Symbol);
         }
         
         [Fact]
-        public void checkforverticalLaser()
+        public void given_roverFacingNorth_and_InstructionEqualsShootLaser_when_ExecuteCommand_then_DisplaySymbolEqualsVerticalLaser()
         {
             string[] args = new[] {"location:1,2,n", "obstacles:5,1", "commands:s", "mode:explore"};
             
@@ -63,13 +63,13 @@ namespace MarsRover.Tests
             
             RoverBehaviour roverBehaviour = new RoverBehaviour();
 
-            RoverLocation roverLocation = roverBehaviour.ExecuteCommand(roverSettings.RoverLocation, new Command(RoverInstruction.ShootLaser), surface);
+            ObjectLocation objectLocation = roverBehaviour.ExecuteCommand(roverSettings.ObjectLocation, new Command(RoverInstruction.ShootLaser), surface);
             
-            Assert.Equal(DisplaySymbol.LaserVertical, roverLocation.Symbol);
+            Assert.Equal(DisplaySymbol.LaserVertical, objectLocation.Symbol);
         }
         
         [Fact]
-        public void checkforoffgridshot()
+        public void given_roverFacingEdgeOfGrid_and_InstructionEqualsShootLaser_when_ExecuteCommand_then_DisplaySymbolEqualsFreeSpace()
         {
             string[] args = new[] {"location:0,0,n", "obstacles:5,1", "commands:s", "mode:explore"};
             
@@ -82,9 +82,9 @@ namespace MarsRover.Tests
             
             RoverBehaviour roverBehaviour = new RoverBehaviour();
 
-            RoverLocation roverLocation = roverBehaviour.ExecuteCommand(roverSettings.RoverLocation, new Command(RoverInstruction.ShootLaser), surface);
+            ObjectLocation objectLocation = roverBehaviour.ExecuteCommand(roverSettings.ObjectLocation, new Command(RoverInstruction.ShootLaser), surface);
             
-            Assert.Equal(DisplaySymbol.FreeSpace, roverLocation.Symbol);
+            Assert.Equal(DisplaySymbol.FreeSpace, objectLocation.Symbol);
         }
         
         [Fact]
@@ -114,7 +114,7 @@ namespace MarsRover.Tests
             IMarsSurfaceBuilder _marsSurfaceBuilder = planetSettings.MarsSurfaceBuilder;
             
             MarsSurface surface = _marsSurfaceBuilder.CreateSurface();
-            surface = _marsSurfaceBuilder.UpdateSurface(surface, roverSettings.RoverLocation.Coordinate, DisplaySymbol.RoverEastFacing);
+            surface = _marsSurfaceBuilder.UpdateSurface(surface, roverSettings.ObjectLocation.Coordinate, DisplaySymbol.RoverEastFacing);
            
             Report report = _engine.RunProgram();
             

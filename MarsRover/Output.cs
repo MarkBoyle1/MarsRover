@@ -9,18 +9,14 @@ namespace MarsRover
     public class Output : IOutput
     {
         private ConsoleColor _explosionColour = ConsoleColor.Yellow;
-        private int _sizeOfGrid;
-        public Output(int sizeOfGrid)
-        {
-            _sizeOfGrid = sizeOfGrid;
-        }
+        
         public void DisplaySurface(MarsSurface surface, int threadSpeed)
         {
             Console.OutputEncoding = Encoding.UTF8;
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.White;
 
-            for(int row = 0; row < _sizeOfGrid; row++)
+            for(int row = 0; row < surface.SizeOfGrid; row++)
             {
                 foreach (var point in surface.Surface[row])
                 {
@@ -56,6 +52,7 @@ namespace MarsRover
         public void DisplayMessage(string message)
         {
             Console.WriteLine(message);
+            Thread.Sleep(200);
         }
 
         private ConsoleColor SwapExplosionColour(ConsoleColor currentColour)

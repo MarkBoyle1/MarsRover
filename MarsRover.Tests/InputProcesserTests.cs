@@ -13,9 +13,9 @@ namespace MarsRover.Tests
 
             RoverSettings roverSettings = _inputProcessor.GetRoverSettings(args);
             
-            Assert.Equal(Direction.North, roverSettings.RoverLocation.DirectionFacing);
-            Assert.Equal(1, roverSettings.RoverLocation.Coordinate.XCoordinate);
-            Assert.Equal(2, roverSettings.RoverLocation.Coordinate.YCoordinate);
+            Assert.Equal(Direction.North, roverSettings.ObjectLocation.DirectionFacing);
+            Assert.Equal(1, roverSettings.ObjectLocation.Coordinate.XCoordinate);
+            Assert.Equal(2, roverSettings.ObjectLocation.Coordinate.YCoordinate);
         }
         
         [Fact]

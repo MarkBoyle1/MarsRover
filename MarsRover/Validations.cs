@@ -7,7 +7,7 @@ namespace MarsRover
         {
             _sizeOfGrid = sizeOfGrid;
         }
-        public bool LocationContainsObstacle(MarsSurface surface, RoverLocation location)
+        public bool LocationContainsObstacle(MarsSurface surface, ObjectLocation location)
         {
             return surface.GetPoint(location.Coordinate) == DisplaySymbol.Obstacle;
         }

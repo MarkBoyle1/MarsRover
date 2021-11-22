@@ -12,6 +12,7 @@ namespace MarsRover
         static void Main(string[] args)
         {
             InputProcessor _inputProcessor = new InputProcessor();
+            IOutput _output = new Output();
             
             args = Array.ConvertAll(args, a => a.ToLower());
             
@@ -21,10 +22,8 @@ namespace MarsRover
             }
             catch (FileNotFoundException e)
             {
-                Console.WriteLine(e.Message);
-                Thread.Sleep(3000);
-                Console.WriteLine("File Not Found!");
-                Thread.Sleep(5000);
+                _output.DisplayMessage(e.Message);
+                _output.DisplayMessage(OutputMessages.FileNotFound);
             }
             
             RoverSettings roverSettings = _inputProcessor.GetRoverSettings(args);

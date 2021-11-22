@@ -5,22 +5,11 @@ namespace MarsRover
 {
     public class DefaultSettings
     {
-        // public RoverLocation DefaultLocation;
-        // public string[] DefaultCommands;
-        // public List<Coordinate> DefaultObstacles;
-        // public IObjective DefaultMode;
         public const int DefaultMaxDistance = 100;
         public const int DefaultGridSize = 20;
-        public const int DefaultPercentageOfObstacles = 20;
-        public const string DefaultJSONFilePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/JSONInput.json";
-        public const string DefaultCSVFilePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/MarsRoverInput.csv";
-
-        public DefaultSettings()
-        {
-            // DefaultLocation = new RoverLocation(new Coordinate(1,1), Direction.North);
-            // DefaultCommands = new string[] {"r", "f", "f", "r", "f", "f", "l", "b"};
-            // DefaultObstacles = new List<Coordinate>();
-            // DefaultMode = new Destroyer(DefaultMaxDistance);
-        }
+        public const int DefaultPercentageOfObstacles = 10;
+        public const int RoverSpeed = 500;
+        public const int ExplosionSpeed = 300;
+        public const int LaserSpeed= 200;
     }
 }

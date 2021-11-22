@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using MarsRover.Objectives;
 using Xunit;
 
@@ -8,28 +7,8 @@ namespace MarsRover.Tests
     {
         private RoverSettings _defaultRoverSettings;
         private PlanetSettings _defaultplanPlanetSettings;
-        private Engine _engine;
         private InputProcessor _inputProcesser = new InputProcessor();
 
-        public ImplementationTests()
-        {
-            List<Coordinate> obstacles = new List<Coordinate>() {new Coordinate(1,2)};
-            _defaultRoverSettings = new RoverSettings
-            (
-                new RoverLocation(new Coordinate(1, 1), Direction.North, DisplaySymbol.RoverNorthFacing),
-                new List<Command>(),
-                new Destroyer(1000)
-            );
-
-            _defaultplanPlanetSettings = new PlanetSettings
-            (20,
-                new List<Coordinate>(),
-                new MarsSurfaceBuilder(obstacles, 20)
-            );
-            
-            _engine = new Engine(_defaultRoverSettings, _defaultplanPlanetSettings);
-        }
-        
         [Fact]
         public void given_roverWillMeetObstacleAtTwoTwo_when_RunProgram_then_returns_LocationEqualsTwoOne()
         {
@@ -95,16 +74,31 @@ namespace MarsRover.Tests
         }
         
         [Fact]
-        public void CompletesMappingMode()
+        public void given_gridSizeEquals1_and_objectiveEqualsMap_when_RunProgram_then_areasDiscoveredEquals1()
         {
-            IMarsSurfaceBuilder marsSurfaceBuilder = new MappingSurfaceBuilder(1);
+            string[] args = new[] {"location:0,0,e", "mode:map", "gridsize:1"};
 
+            RoverSettings roverSettings = _inputProcesser.GetRoverSettings(args);
+            PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);
+            Engine _engine = new Engine(roverSettings, planetSettings);
+            
+            Report report = _engine.RunProgram();
+            
+            Assert.Equal(1, report.CurrentSurface.AreasDiscovered);
+        }
+        
+        [Fact]
+        public void given_surfaceIsBlank_and_objectiveEqualsDestroyer_when_CheckForCompletion_then_return_true()
+        {
+            IMarsSurfaceBuilder marsSurfaceBuilder = new TestBlankSurfaceBuilder();
+            ReportBuilder reportBuilder = new ReportBuilder();
             MarsSurface surface = marsSurfaceBuilder.CreateSurface();
-            surface = marsSurfaceBuilder.UpdateSurface(surface, new Coordinate(0, 0), DisplaySymbol.RoverNorthFacing);
+            ObjectLocation roverLocation = new ObjectLocation(new Coordinate(0, 0), Direction.North);
 
-            IObjective objective = new MapSurface(1000);
+            IObjective objective = new Destroyer(100);
+            Report report = reportBuilder.CreateReport(0, surface, surface, roverLocation);
 
-            Assert.Equal(1, surface.AreasDiscovered);
+            Assert.True(objective.CheckForCompletion(report));
         }
 
         [Fact]

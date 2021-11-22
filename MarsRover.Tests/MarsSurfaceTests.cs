@@ -5,7 +5,6 @@ namespace MarsRover.Tests
 {
     public class MarsSurfaceTests
     {
-        private IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>(), 20);
         private InputProcessor _inputProcessor = new InputProcessor();
         
         [Fact]
@@ -25,7 +24,7 @@ namespace MarsRover.Tests
         public void given_startingLocationEqualsOneOneNorth_when_PlaceRoverOnStartingPosition_then_CoordinateOneOne_returns_RoverFacingNorth()
         {
             Coordinate coordinate = new Coordinate(1, 1);
-            RoverLocation startingPoint = new RoverLocation(coordinate, Direction.North, DisplaySymbol.RoverNorthFacing);
+            ObjectLocation startingPoint = new ObjectLocation(coordinate, Direction.North, DisplaySymbol.RoverNorthFacing);
             IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>(), 20);
         
             MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
@@ -40,7 +39,7 @@ namespace MarsRover.Tests
         public void given_startingLocationEqualsOneOneEast_when_PlaceRoverOnStartingPosition_then_CoordinateOneOne_returns_RoverFacingEast()
         {
             Coordinate coordinate = new Coordinate(1, 1);
-            RoverLocation startingPoint = new RoverLocation(coordinate, Direction.East, DisplaySymbol.RoverEastFacing);
+            ObjectLocation startingPoint = new ObjectLocation(coordinate, Direction.East, DisplaySymbol.RoverEastFacing);
             IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>(), 20);
         
             MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
@@ -56,7 +55,7 @@ namespace MarsRover.Tests
         public void given_startingLocationEqualsOneOneEast_when_MoveForward_then_CoordinateOneOne_returns_FreeSpace()
         {
             Coordinate coordinate = new Coordinate(1, 1);
-            RoverLocation startingPoint = new RoverLocation(coordinate, Direction.East, DisplaySymbol.RoverEastFacing);
+            ObjectLocation startingPoint = new ObjectLocation(coordinate, Direction.East, DisplaySymbol.RoverEastFacing);
             IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>(), 20);
         
             MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
@@ -64,7 +63,7 @@ namespace MarsRover.Tests
             
             RoverBehaviour _roverBehaviour = new RoverBehaviour();
         
-            RoverLocation newLocation =
+            ObjectLocation newLocation =
                 _roverBehaviour.ExecuteCommand(startingPoint, new Command(RoverInstruction.MoveForward), marsSurface);
         
             marsSurface = _marsSurfaceBuilder.UpdateSurface(marsSurface, newLocation.Coordinate, DisplaySymbol.RoverEastFacing);

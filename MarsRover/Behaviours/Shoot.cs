@@ -11,28 +11,28 @@ namespace MarsRover.Behaviours
             _surface = surface;
             _movement = new MovementMethods(surface.SizeOfGrid);
         }
-        public RoverLocation ExecuteCommand(RoverLocation location)
+        public ObjectLocation ExecuteCommand(ObjectLocation location)
         {
             Coordinate nextLocation = _movement.GetNextSpace(location.Coordinate, location.DirectionFacing);
             if (!_movement.LocationIsOnGrid(20, nextLocation))
             {
-                return new RoverLocation(nextLocation, location.DirectionFacing,
+                return new ObjectLocation(nextLocation, location.DirectionFacing,
                     DisplaySymbol.FreeSpace);
             }
 
             if (_surface.GetPoint(nextLocation) == DisplaySymbol.FreeSpace)
             {
-                return new RoverLocation(nextLocation, location.DirectionFacing,
+                return new ObjectLocation(nextLocation, location.DirectionFacing,
                     DetermineLaserSymbol(location.DirectionFacing));
             }
 
             if (_surface.GetPoint(nextLocation) == DisplaySymbol.Obstacle)
             {
-                return new RoverLocation(nextLocation, location.DirectionFacing,
+                return new ObjectLocation(nextLocation, location.DirectionFacing,
                     DisplaySymbol.Explosion);
             }
             
-            return new RoverLocation(nextLocation, location.DirectionFacing,
+            return new ObjectLocation(nextLocation, location.DirectionFacing,
                 DisplaySymbol.FreeSpace);
         }
 

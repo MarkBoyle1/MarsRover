@@ -11,7 +11,7 @@ namespace MarsRover.Behaviours
             _turnDirection = turnDirection;
         }
         
-        public RoverLocation ExecuteCommand(RoverLocation location)
+        public ObjectLocation ExecuteCommand(ObjectLocation location)
         {
             Direction directionFacing = location.DirectionFacing;
 
@@ -25,7 +25,7 @@ namespace MarsRover.Behaviours
                 directionFacing = directionFacing == Direction.West ? Direction.North : directionFacing + 1;
             }
 
-            return new RoverLocation(location.Coordinate, directionFacing);
+            return new ObjectLocation(location.Coordinate, directionFacing);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace MarsRover.Tests
             MarsSurface _finalSurface = _marsSurfaceBuilderSecond.CreateSurface();
 
             int distanceTravelled = 10;
-            RoverLocation finalLocation = new RoverLocation(new Coordinate(1, 1), Direction.South, DisplaySymbol.RoverSouthFacing);
+            ObjectLocation finalLocation = new ObjectLocation(new Coordinate(1, 1), Direction.South, DisplaySymbol.RoverSouthFacing);
 
             Report report =
                 _reportBuilder.CreateReport(distanceTravelled, _initialSurface, _finalSurface, finalLocation);
@@ -50,7 +50,7 @@ namespace MarsRover.Tests
             MarsSurface _finalSurface = _marsSurfaceBuilderSecond.CreateSurface();
 
             int distanceTravelled = 10;
-            RoverLocation finalLocation = new RoverLocation(new Coordinate(1, 1), Direction.South, DisplaySymbol.RoverSouthFacing);
+            ObjectLocation finalLocation = new ObjectLocation(new Coordinate(1, 1), Direction.South, DisplaySymbol.RoverSouthFacing);
 
             Report report =
                 _reportBuilder.CreateReport(distanceTravelled, _initialSurface, _finalSurface, finalLocation);

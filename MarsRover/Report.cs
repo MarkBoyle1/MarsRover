@@ -6,10 +6,10 @@ namespace MarsRover
         public int ObstaclesDestroyed { get; }
         public int DistanceTravelled { get; }
         public MarsSurface CurrentSurface { get; }
-        public RoverLocation FinalLocation { get; }
+        public ObjectLocation FinalLocation { get; }
 
         public Report(int distanceTravelled, int obstaclesDiscovered, int obstaclesDestroyed, MarsSurface currentSurface,
-            RoverLocation finalLocation)
+            ObjectLocation finalLocation)
         {
             DistanceTravelled = distanceTravelled;
             ObstaclesDiscovered = obstaclesDiscovered;
