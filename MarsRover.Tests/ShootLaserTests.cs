@@ -75,7 +75,6 @@ namespace MarsRover.Tests
             
             RoverSettings roverSettings = _inputProcessor.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcessor.GetPlanetSettings(args);
-            Engine _engine = new Engine(roverSettings, planetSettings);
 
             IMarsSurfaceBuilder marsSurfaceBuilder = planetSettings.MarsSurfaceBuilder;
             MarsSurface surface = marsSurfaceBuilder.CreateSurface();

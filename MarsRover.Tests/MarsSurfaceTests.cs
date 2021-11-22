@@ -71,7 +71,6 @@ namespace MarsRover.Tests
             
             string surfaceTerrainAtOldLocation = marsSurface.GetPoint(startingPoint.Coordinate);
             string surfaceTerrainAtNewLocation = marsSurface.GetPoint(newLocation.Coordinate);
-        
             
             Assert.Equal(DisplaySymbol.FreeSpace, surfaceTerrainAtOldLocation);
             Assert.Equal(DisplaySymbol.RoverEastFacing, surfaceTerrainAtNewLocation);
@@ -99,6 +98,18 @@ namespace MarsRover.Tests
             MarsSurface surface = _mappingBuilder.CreateSurface();
             
             Assert.Equal(0, surface.AreasDiscovered);
+        }
+        
+        [Fact]
+        public void given_obstacleInputContainsThreeCoordinates_when_CreateSurface_then_ObstacleCountEqualsThree()
+        {
+            string[] obstacles = new[] {"obstacles:1,1;1,2;0,3"};
+            List<Coordinate> obstacleCoordinates = _inputProcessor.TurnObstacleInputsIntoCoordinates(obstacles);
+            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(obstacleCoordinates, 20);
+        
+            MarsSurface surface = _marsSurfaceBuilder.CreateSurface();
+            
+            Assert.Equal(3, surface.ObstacleCount);
         }
     }
 }

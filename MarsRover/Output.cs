@@ -52,7 +52,7 @@ namespace MarsRover
         public void DisplayMessage(string message)
         {
             Console.WriteLine(message);
-            Thread.Sleep(200);
+            Thread.Sleep(2000);
         }
 
         private ConsoleColor SwapExplosionColour(ConsoleColor currentColour)

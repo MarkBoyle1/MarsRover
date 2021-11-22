@@ -85,6 +85,7 @@ namespace MarsRover.Tests
             Report report = _engine.RunProgram();
             
             Assert.Equal(1, report.CurrentSurface.AreasDiscovered);
+            Assert.Equal(0, report.DistanceTravelled);
         }
         
         [Fact]

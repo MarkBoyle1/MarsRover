@@ -29,6 +29,16 @@ namespace MarsRover.Tests
         }
         
         [Fact]
+        public void given_argsContainssize10_when_GetPlanetSettings_then_return_GridSizeEquals10()
+        {
+            string[] args = new[] {"gridsize:10"};
+
+            PlanetSettings planetSettings = _inputProcessor.GetPlanetSettings(args);
+            
+            Assert.Equal(10, planetSettings.SizeOfGrid);
+        }
+
+        [Fact]
         public void given_argsContainsThreeObstacles_when_GetRoverSettings_then_return_ListWithThreeObstacles()
         {
             string[] args = new[] {"obstacles:1,2;2,2;3,1"};

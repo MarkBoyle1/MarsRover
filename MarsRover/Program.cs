@@ -1,9 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Threading;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace MarsRover
 {
@@ -14,6 +10,7 @@ namespace MarsRover
             InputProcessor _inputProcessor = new InputProcessor();
             IOutput _output = new Output();
             
+            //Convert input into lowercase
             args = Array.ConvertAll(args, a => a.ToLower());
             
             try

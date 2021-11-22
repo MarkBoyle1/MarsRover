@@ -10,7 +10,6 @@ namespace MarsRover.Tests
 
         public BehaviourTests()
         {
-           
             _roverBehaviour = new RoverBehaviour();
             _surface = _marsSurfaceBuilder.CreateSurface();
         }
@@ -19,14 +18,14 @@ namespace MarsRover.Tests
         public void given_locationEqualsL1and1andN_and_commandEqualsTurnLeft_when_ExecuteCommand_then_LocationEquals1and1andW()
         {
             Coordinate coordinate = new Coordinate(1, 1);
-            ObjectLocation objectLocation = new ObjectLocation(coordinate, Direction.North, DisplaySymbol.RoverNorthFacing);
+            ObjectLocation roverLocation = new ObjectLocation(coordinate, Direction.North, DisplaySymbol.RoverNorthFacing);
             Command command = new Command(RoverInstruction.TurnLeft);
             
-            objectLocation = _roverBehaviour.ExecuteCommand(objectLocation, command, _surface);
+            roverLocation = _roverBehaviour.ExecuteCommand(roverLocation, command, _surface);
         
             Direction expectResult = Direction.West;
         
-            Direction actualResult = objectLocation.DirectionFacing;
+            Direction actualResult = roverLocation.DirectionFacing;
             
             Assert.Equal(expectResult, actualResult);
         }

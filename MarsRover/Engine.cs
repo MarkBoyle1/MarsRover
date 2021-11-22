@@ -29,14 +29,17 @@ namespace MarsRover
         
         public Report RunProgram()
         {
-            ObjectLocation objectLocation = _roverSettings.ObjectLocation;
+            ObjectLocation roverLocation = _roverSettings.ObjectLocation;
             
             MarsSurface surface = _marsSurfaceBuilder.CreateSurface();
-            surface = _marsSurfaceBuilder.UpdateSurface(surface, objectLocation.Coordinate, objectLocation.Symbol);
+            
+            //Place Rover on the surface
+            surface = _marsSurfaceBuilder.UpdateSurface(surface, roverLocation.Coordinate, roverLocation.Symbol);
+            
             _initialSurface = surface;
             _output.DisplaySurface(surface, DefaultSettings.RoverSpeed);
 
-            Report report = _reportBuilder.CreateReport(_distancedTravelled, surface, surface, objectLocation);
+            Report report = _reportBuilder.CreateReport(_distancedTravelled, surface, surface, roverLocation);
             
             Command command = _objective.ReceiveCommand();
             
@@ -45,7 +48,8 @@ namespace MarsRover
                 Report oldReport = report;
                 report = ActivateRover(report, command);
 
-                if (report == null)
+                //Report is null when mission is stopped from finding an obstacle
+                if (report == null) 
                 {
                     report = oldReport;
                     break;
@@ -74,10 +78,11 @@ namespace MarsRover
 
                     while (_validations.LocationContainsObstacle(report.CurrentSurface, newLocation))
                     {
-                        _output.DisplayMessage(OutputMessages.ObstacleFound);
                         command = _objective.ReceiveCommandForObstacle();
+                        
                         if (command.Instruction == RoverInstruction.Stop)
                         {
+                            _output.DisplayMessage(OutputMessages.ObstacleFound);
                             return null;
                         }
                         newLocation = _roverBehaviour.ExecuteCommand(report.FinalLocation, command, report.CurrentSurface);
@@ -101,7 +106,7 @@ namespace MarsRover
             //Update new Location
             surface = _marsSurfaceBuilder.UpdateSurface(surface, newLocation.Coordinate,
                 newLocation.Symbol);
-            
+
             //Reveal next space
             ObjectLocation nextLocation =
                 _roverBehaviour.ExecuteCommand(newLocation, new Command(RoverInstruction.LookAhead), surface);
@@ -127,8 +132,9 @@ namespace MarsRover
 
             while (_validations.LocationIsOnGrid(20, newLocation.Coordinate))
             {
+                string symbolForOldLocation = SpaceNeedsToBeCleared(surface, newLocation.Coordinate, roverImage);
                 surface =
-                    _marsSurfaceBuilder.UpdateSurface(surface, newLocation.Coordinate, SpaceNeedsToBeCleared(surface, newLocation.Coordinate, roverImage));
+                    _marsSurfaceBuilder.UpdateSurface(surface, newLocation.Coordinate, symbolForOldLocation);
             
                 newLocation =
                     _roverBehaviour.ExecuteCommand(newLocation, new Command(RoverInstruction.ShootLaser), surface);

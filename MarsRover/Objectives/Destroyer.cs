@@ -14,7 +14,7 @@ namespace MarsRover.Objectives
         public Command ReceiveCommand()
         {
             int randomNumber = random.Next(1, 11);
-            if (randomNumber >= 6)
+            if (randomNumber >= 7)
             {
                 return new Command(RoverInstruction.MoveForward);
             }

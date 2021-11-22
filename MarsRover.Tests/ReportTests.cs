@@ -9,18 +9,6 @@ namespace MarsRover.Tests
         private ReportBuilder _reportBuilder = new ReportBuilder();
         
         [Fact]
-        public void given_obstacleInputContainsThreeCoordinates_when_CreateSurface_then_ObstacleCountEqualsThree()
-        {
-            string[] obstacles = new[] {"obstacles:1,1;1,2;0,3"};
-            List<Coordinate> obstacleCoordinates = _inputProcessor.TurnObstacleInputsIntoCoordinates(obstacles);
-            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(obstacleCoordinates, 20);
-        
-            MarsSurface surface = _marsSurfaceBuilder.CreateSurface();
-            
-            Assert.Equal(3, surface.ObstacleCount);
-        }
-        
-        [Fact]
         public void given_finalSurfaceHasTwoObstacles_and_initialSurfaceHasOneObstacle_when_CreateReport_then_ObstaclesDiscoveredEqualsOne()
         {
             IMarsSurfaceBuilder _marsSurfaceBuilderFirst = new MarsSurfaceBuilder(new List<Coordinate>() { new Coordinate(1,1)}, 20);
