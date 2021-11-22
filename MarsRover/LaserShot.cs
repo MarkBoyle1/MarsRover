@@ -22,7 +22,7 @@ namespace MarsRover
         public MarsSurface FireGun(MarsSurface surface, Coordinate coordinate, Direction direction)
         {
             string symbolForOldLocation =
-                _utility.SpaceNeedsToBeCleared(surface, coordinate, _utility.DetermineDirectionOfRover(direction));
+                SpaceNeedsToBeCleared(surface, coordinate, _utility.DetermineDirectionOfRover(direction));
             surface = _marsSurfaceBuilder.UpdateSurface(surface, coordinate, symbolForOldLocation);
             
             LaserBeam laserBeam = UpdateLaserShot(surface, coordinate, direction);
@@ -68,6 +68,13 @@ namespace MarsRover
             }
 
             return new LaserBeam(nextSpace, symbol);
+        }
+        
+        private string SpaceNeedsToBeCleared(MarsSurface surface, Coordinate coordinate, string roverImage)
+        {
+            return surface.Surface[coordinate.YCoordinate][coordinate.XCoordinate] == roverImage
+                ? roverImage
+                : DisplaySymbol.FreeSpace;
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using MarsRover.Exceptions;
 
 namespace MarsRover
 {
@@ -24,7 +25,7 @@ namespace MarsRover
                 case Direction.West:
                     return new Coordinate(coordinate.XCoordinate - 1, coordinate.YCoordinate);
                 default:
-                    throw new Exception();
+                    throw new InvalidDirectionException(direction.ToString());
             }
         }
         
@@ -41,17 +42,10 @@ namespace MarsRover
                 case Direction.West:
                     return DisplaySymbol.RoverWestFacing;
                 default:
-                    throw new Exception();
+                    throw new InvalidDirectionException(direction.ToString());
             }
         }
-        
-        public string SpaceNeedsToBeCleared(MarsSurface surface, Coordinate coordinate, string roverImage)
-        {
-            return surface.Surface[coordinate.YCoordinate][coordinate.XCoordinate] == roverImage
-                ? roverImage
-                : DisplaySymbol.FreeSpace;
-        }
-        
+
         public Coordinate WrapAroundPlanetIfRequired(Coordinate coordinate)
         {
             int xCoordinate = AdjustIndividualCoordinate(coordinate.XCoordinate);
@@ -60,7 +54,7 @@ namespace MarsRover
             return new Coordinate(xCoordinate, yCoordinate);
         }
 
-        public int AdjustIndividualCoordinate(int coordinate)
+        private int AdjustIndividualCoordinate(int coordinate)
         {
             if (coordinate < 0)
             {

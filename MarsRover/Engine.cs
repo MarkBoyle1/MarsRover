@@ -42,7 +42,6 @@ namespace MarsRover
 
             Report report = _reportBuilder.CreateReport(_distancedTravelled, surface, surface, roverLocation);
             
-
             Command command = _objective.ReceiveCommand();
             
             while (command.Instruction != RoverInstruction.Stop && !_objective.CheckForCompletion(report))
@@ -56,7 +55,6 @@ namespace MarsRover
                     break;
                 }
                 
-                surface = report.CurrentSurface;
                 command = _objective.ReceiveCommand();
             }
             

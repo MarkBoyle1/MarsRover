@@ -7,14 +7,14 @@ namespace MarsRover
         private int SizeOfGrid = 4;
         public MarsSurface CreateSurface()
         {
-            string[][] surface = new string[4][];
+            string[][] surface = new string[SizeOfGrid][];
             surface = surface.Select
                 (
-                    x => new string[4].Select(x => DisplaySymbol.FreeSpace).ToArray()
+                    x => new string[SizeOfGrid].Select(x => DisplaySymbol.FreeSpace).ToArray()
                 )
                 .ToArray();
             
-            return new MarsSurface(surface, 1, 16);
+            return new MarsSurface(surface, 0, SizeOfGrid * SizeOfGrid);
         }
         
         public MarsSurface UpdateSurface(MarsSurface surface, Coordinate location, string symbol)
@@ -32,7 +32,7 @@ namespace MarsRover
 
             updatedSurface[location.YCoordinate][location.XCoordinate] = symbol;
             
-            return new MarsSurface(updatedSurface, 1, 16);
+            return new MarsSurface(updatedSurface, 0, SizeOfGrid * SizeOfGrid);
         }
     }
 }

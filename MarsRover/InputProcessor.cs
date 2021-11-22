@@ -22,6 +22,19 @@ namespace MarsRover
         private DefaultSettings _defaultSettings = new DefaultSettings();
         private const string DefaultJSONFilePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/JSONInput.json";
         private const string DefaultCSVFilePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/MarsRoverInput.csv";
+        private const string LocationTag = "location:";
+        private const string ModeTag = "mode:";
+        private const string CommandsTag = "commands:";
+        private const string ObstaclesTag = "obstacles:";
+        private const string FilePathTag = "filepath:";
+        private const string GridSizeTag = "gridsize:";
+        private const string MaxDistanceTag = "maxdistance:";
+        private const string JSONTag = "jsonfile";
+        private const string CSVTag = "csvfile";
+        private const string MapObjective = "mode:map";
+        private const string ExploreObjective = "mode:explore";
+        private const string DestroyerObjective = "mode:destroyer";
+        
 
         public RoverSettings GetRoverSettings(string[] args)
         {
@@ -49,7 +62,7 @@ namespace MarsRover
 
             foreach (var argument in args)
             {
-                if (argument.StartsWith("commands:"))
+                if (argument.StartsWith(CommandsTag))
                 {
                     commands = argument.Remove(0,9).Split(',', StringSplitOptions.RemoveEmptyEntries);
                 }
@@ -92,7 +105,7 @@ namespace MarsRover
             
             foreach (var argument in args)
             {
-                if (argument.StartsWith("location:"))
+                if (argument.StartsWith(LocationTag))
                 {
                     string[] startingLocation = argument.Remove(0, 9).Split(',', StringSplitOptions.RemoveEmptyEntries).ToArray();
                     
@@ -130,7 +143,7 @@ namespace MarsRover
             
             foreach (var argument in args)
             {
-                if (argument.StartsWith("obstacles:"))
+                if (argument.StartsWith(ObstaclesTag))
                 {
                     obstacles = argument.Remove(0,10).Split(';', StringSplitOptions.RemoveEmptyEntries);
                 }
@@ -151,7 +164,7 @@ namespace MarsRover
         {
             foreach (var argument in args)
             {
-                if (argument.StartsWith("maxdistance:"))
+                if (argument.StartsWith(MaxDistanceTag))
                 {
                      return Convert.ToInt32(argument.Remove(0,12));
                 }
@@ -166,29 +179,27 @@ namespace MarsRover
             
             foreach (var argument in args)
             {
-                if (argument.StartsWith("mode:"))
+                if (argument.StartsWith(ModeTag))
                 {
-                    objective = argument.Remove(0,5);
+                    objective = argument;
                 }
             }
             
-            foreach (var argument in args)
+            if (objective == MapObjective)
             {
-                if (objective == "map")
-                {
-                    return new MapSurface(maxDistance);
-                }
-
-                if (objective == "explore")
-                {
-                    return new FollowCommands(commands);
-                }
-                
-                if (objective == "destroyer")
-                {
-                    return new Destroyer(maxDistance);
-                }
+                return new MapSurface(maxDistance);
             }
+
+            if (objective == ExploreObjective)
+            {
+                return new FollowCommands(commands);
+            }
+            
+            if (objective == DestroyerObjective)
+            {
+                return new Destroyer(maxDistance);
+            }
+            
 
             return _defaultSettings.DefaultMode;
         }
@@ -197,7 +208,7 @@ namespace MarsRover
         {
             foreach (var argument in args)
             {
-                if (argument.StartsWith("gridsize:"))
+                if (argument.StartsWith(GridSizeTag))
                 {
                     return Convert.ToInt32(argument.Remove(0,9));
                 }
@@ -210,7 +221,7 @@ namespace MarsRover
         {
             foreach (var argument in args)
             {
-                if (argument == "mode:map")
+                if (argument == MapObjective)
                 {
                     return new MappingSurfaceBuilder(sizeOfGrid);
                 }
@@ -226,13 +237,13 @@ namespace MarsRover
 
             foreach (var argument in args)
             {
-                if (argument.StartsWith("filepath:"))
+                if (argument.StartsWith(FilePathTag))
                 {
                     filePath = argument.Remove(0,9);
                 }
             }
             
-            if (args.Contains("jsonfile") || Path.GetExtension(filePath) == ".json")
+            if (args.Contains(JSONTag) || Path.GetExtension(filePath) == ".json")
             {
                 filePath = string.IsNullOrEmpty(filePath) ? DefaultSettings.DefaultJSONFilePath : filePath;
                 
@@ -245,7 +256,7 @@ namespace MarsRover
                     updatedArgs.Add(p.Name + p.Value);
                 }
             }
-            else if (args.Contains("csvfile") || Path.GetExtension(filePath) == ".csv")
+            else if (args.Contains(CSVTag) || Path.GetExtension(filePath) == ".csv")
             {
                 filePath = string.IsNullOrEmpty(filePath) ? DefaultSettings.DefaultCSVFilePath : filePath;
                 args = File.ReadAllLines(filePath);

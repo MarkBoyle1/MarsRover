@@ -51,5 +51,29 @@ namespace MarsRover.Tests
             Assert.Equal(DisplaySymbol.Obstacle, surface.GetPoint(new Coordinate(2,2)));
             Assert.Equal(DisplaySymbol.Obstacle, surface.GetPoint(new Coordinate(3,1)));
         }
+
+        [Fact]
+        public void
+            given_jsonfileContainsSize10AndMaxDistance50_when_GetInputFromFile_then_return_size10Andmaxdistance50()
+        {
+            string testJSONFilePath = "filepath:/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/TestJSONFile.json";
+            string[] args = new string[]{testJSONFilePath};
+            args = _inputProcessor.GetInputFromFile(args);
+            
+            Assert.Contains("maxdistance:50", args);
+            Assert.Contains("gridsize:10", args);
+        }
+        
+        [Fact]
+        public void
+            given_csvfileContainsLocation11sAndModeExplore_when_GetInputFromFile_then_return_location11sAndModeExplore()
+        {
+            string testCSVFilePath = "filepath:/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/TestCSVFile.csv";
+            string[] args = new string[]{testCSVFilePath};
+            args = _inputProcessor.GetInputFromFile(args);
+            
+            Assert.Contains("location:1,1,s", args);
+            Assert.Contains("mode:explore", args);
+        }
     }
 }
