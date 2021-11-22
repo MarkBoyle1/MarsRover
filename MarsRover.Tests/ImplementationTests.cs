@@ -16,7 +16,7 @@ namespace MarsRover.Tests
             List<Coordinate> obstacles = new List<Coordinate>() {new Coordinate(1,2)};
             _defaultRoverSettings = new RoverSettings
             (
-                new RoverLocation(new Coordinate(1, 1), Direction.North),
+                new RoverLocation(new Coordinate(1, 1), Direction.North, DisplaySymbol.RoverNorthFacing),
                 new List<Command>(),
                 new Destroyer(1000)
             );
@@ -33,7 +33,7 @@ namespace MarsRover.Tests
         [Fact]
         public void given_roverWillMeetObstacleAtTwoTwo_when_RunProgram_then_returns_LocationEqualsTwoOne()
         {
-            string[] args = new[] {"location:1,1,n", "commands:r,f,r,f,f", "obstacles:2,2", "mode:explore"};
+            string[] args = new[] {"location:1,1,n", "commands:r,f,r,f,f", "obstacles:5,5", "mode:explore"};
             
             RoverSettings roverSettings = _inputProcesser.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);
@@ -42,7 +42,7 @@ namespace MarsRover.Tests
             Report report = _engine.RunProgram();
             
             Assert.Equal(2, report.FinalLocation.Coordinate.XCoordinate);
-            Assert.Equal(1, report.FinalLocation.Coordinate.YCoordinate);
+            Assert.Equal(3, report.FinalLocation.Coordinate.YCoordinate);
             Assert.Equal(Direction.South, report.FinalLocation.DirectionFacing);
         }
         
@@ -110,7 +110,7 @@ namespace MarsRover.Tests
         [Fact]
         public void given_roverMeetsObstaclesBeforeFinishingCommands_when_RunProgram_then_RoverStopsAtObstacle()
         {
-            string[] args = new[] {"location:0,0,e", "commands:f,f,f,r,f", "obstacles:2,0", "mode:explore"};
+            string[] args = new[] {"location:0,0,e", "commands:f,f,f,r,f", "obstacles:8,8", "mode:explore"};
 
             RoverSettings roverSettings = _inputProcesser.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);
@@ -118,15 +118,15 @@ namespace MarsRover.Tests
             
             Report report = _engine.RunProgram();
             
-            Assert.Equal(1, report.FinalLocation.Coordinate.XCoordinate);
-            Assert.Equal(0, report.FinalLocation.Coordinate.YCoordinate);
-            Assert.Equal(Direction.East, report.FinalLocation.DirectionFacing);
+            Assert.Equal(3, report.FinalLocation.Coordinate.XCoordinate);
+            Assert.Equal(1, report.FinalLocation.Coordinate.YCoordinate);
+            Assert.Equal(Direction.South, report.FinalLocation.DirectionFacing);
         }
         
         [Fact]
         public void given_maxDistanceEquals5_when_RunProgram_then_distanceTravelledEquals5()
         {
-            string[] args = new[] {"location:0,0,e", "obstacles:2,0", "mode:map", "maxdistance:5"};
+            string[] args = new[] {"location:0,0,e", "obstacles:3,3", "mode:map", "maxdistance:3"};
 
             RoverSettings roverSettings = _inputProcesser.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcesser.GetPlanetSettings(args);
@@ -134,7 +134,7 @@ namespace MarsRover.Tests
             
             Report report = _engine.RunProgram();
             
-            Assert.Equal(5, report.DistanceTravelled);
+            Assert.Equal(3, report.DistanceTravelled);
         }
     }
 }

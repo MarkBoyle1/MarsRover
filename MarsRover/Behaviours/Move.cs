@@ -2,13 +2,13 @@ namespace MarsRover.Behaviours
 {
     public class Move : IBehaviour
     {
-        private UtilityMethods _utility;
+        private MovementMethods _movement;
         private RoverInstruction _instruction;
 
-        public Move(RoverInstruction instruction, UtilityMethods utility)
+        public Move(RoverInstruction instruction)
         {
             _instruction = instruction;
-            _utility = utility;
+            _movement = new MovementMethods(20);
         }
 
         public RoverLocation ExecuteCommand(RoverLocation location)
@@ -17,8 +17,9 @@ namespace MarsRover.Behaviours
             Direction directionFacing = location.DirectionFacing;
             
             newCoordinate = MoveRover(location.Coordinate, directionFacing, _instruction);
+            newCoordinate = _movement.WrapAroundPlanetIfRequired(newCoordinate);
             
-            return new RoverLocation(newCoordinate, directionFacing);
+            return new RoverLocation(newCoordinate, directionFacing, location.Symbol);
         }
         
         private Coordinate MoveRover(Coordinate coordinate, Direction currentDirection, RoverInstruction instruction)
@@ -44,7 +45,7 @@ namespace MarsRover.Behaviours
             
             Coordinate newCoordinate = new Coordinate(xCoordinate, yCoordinate);
 
-            return _utility.WrapAroundPlanetIfRequired(newCoordinate);
+            return newCoordinate;
         }
     }
 }

@@ -25,7 +25,7 @@ namespace MarsRover.Tests
         public void given_startingLocationEqualsOneOneNorth_when_PlaceRoverOnStartingPosition_then_CoordinateOneOne_returns_RoverFacingNorth()
         {
             Coordinate coordinate = new Coordinate(1, 1);
-            RoverLocation startingPoint = new RoverLocation(coordinate, Direction.North);
+            RoverLocation startingPoint = new RoverLocation(coordinate, Direction.North, DisplaySymbol.RoverNorthFacing);
             IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>(), 20);
         
             MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
@@ -40,7 +40,7 @@ namespace MarsRover.Tests
         public void given_startingLocationEqualsOneOneEast_when_PlaceRoverOnStartingPosition_then_CoordinateOneOne_returns_RoverFacingEast()
         {
             Coordinate coordinate = new Coordinate(1, 1);
-            RoverLocation startingPoint = new RoverLocation(coordinate, Direction.East);
+            RoverLocation startingPoint = new RoverLocation(coordinate, Direction.East, DisplaySymbol.RoverEastFacing);
             IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>(), 20);
         
             MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
@@ -56,16 +56,16 @@ namespace MarsRover.Tests
         public void given_startingLocationEqualsOneOneEast_when_MoveForward_then_CoordinateOneOne_returns_FreeSpace()
         {
             Coordinate coordinate = new Coordinate(1, 1);
-            RoverLocation startingPoint = new RoverLocation(coordinate, Direction.East);
+            RoverLocation startingPoint = new RoverLocation(coordinate, Direction.East, DisplaySymbol.RoverEastFacing);
             IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>(), 20);
         
             MarsSurface marsSurface = _marsSurfaceBuilder.CreateSurface();
             marsSurface = _marsSurfaceBuilder.UpdateSurface(marsSurface, startingPoint.Coordinate, DisplaySymbol.RoverEastFacing);
             
-            RoverBehaviour _roverBehaviour = new RoverBehaviour(new UtilityMethods(20));
+            RoverBehaviour _roverBehaviour = new RoverBehaviour();
         
             RoverLocation newLocation =
-                _roverBehaviour.ExecuteCommand(startingPoint, new Command(RoverInstruction.MoveForward));
+                _roverBehaviour.ExecuteCommand(startingPoint, new Command(RoverInstruction.MoveForward), marsSurface);
         
             marsSurface = _marsSurfaceBuilder.UpdateSurface(marsSurface, newLocation.Coordinate, DisplaySymbol.RoverEastFacing);
             marsSurface = _marsSurfaceBuilder.UpdateSurface(marsSurface, startingPoint.Coordinate, DisplaySymbol.FreeSpace);

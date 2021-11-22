@@ -11,7 +11,7 @@ namespace MarsRover.Tests
         
         public ObjectiveTests()
         {
-            _defaultLocation = new RoverLocation(new Coordinate(1, 2), Direction.East);
+            _defaultLocation = new RoverLocation(new Coordinate(1, 2), Direction.East, DisplaySymbol.RoverEastFacing);
         }
         
         [Fact]

@@ -1,3 +1,5 @@
+using MarsRover.Exceptions;
+
 namespace MarsRover.Behaviours
 {
     public class Turn : IBehaviour

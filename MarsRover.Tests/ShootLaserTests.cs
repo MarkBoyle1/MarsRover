@@ -4,54 +4,46 @@ namespace MarsRover.Tests
 {
     public class ShootLaserTests
     {
-        private RoverLocation _defaultLocation;
         private InputProcessor _inputProcessor;
 
         public ShootLaserTests()
         {
-            _defaultLocation = new RoverLocation(new Coordinate(1, 1), Direction.East);
             _inputProcessor = new InputProcessor();
         }
         
         [Fact]
         public void given_obstacleAtFiveOne_and_roverAtOneOneEast_when_ShootLaser_then_FiveOneEqualsFreeSpace()
         {
-            string[] args = new[] {"location:1,1,e", "obstacles:1,1", "mode:destroyer"};
+            string[] args = new[] {"location:1,1,e", "obstacles:5,1", "commands:s", "mode:explore"};
             
             RoverSettings roverSettings = _inputProcessor.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcessor.GetPlanetSettings(args);
             Engine _engine = new Engine(roverSettings, planetSettings);
 
-            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(planetSettings.Obstacles, 20);
+            Report report = _engine.RunProgram();
             
-            MarsSurface surface = _marsSurfaceBuilder.CreateSurface();
-            surface = _marsSurfaceBuilder.UpdateSurface(surface, new Coordinate(1,1), ">");
-            LaserShot laserShot =
-                new LaserShot(planetSettings.MarsSurfaceBuilder, new Output(20), new UtilityMethods(20), 20);
-            surface = laserShot.FireGun(surface, _defaultLocation.Coordinate, _defaultLocation.DirectionFacing);
-            
-            Assert.Equal(DisplaySymbol.FreeSpace, surface.GetPoint(new Coordinate(1,5)));
-            Assert.Equal(DisplaySymbol.RoverEastFacing, surface.GetPoint(new Coordinate(1,1)));
+            Assert.Equal(DisplaySymbol.FreeSpace, report.CurrentSurface.GetPoint(new Coordinate(5,1)));
+            Assert.Equal(DisplaySymbol.RoverEastFacing, report.CurrentSurface.GetPoint(new Coordinate(1,1)));
         }
         
         [Fact]
         public void given_obstacleAtThreeThree_and_roverAtOneOneEast_when_ShootLaser_then_SurfaceDoesNotChange()
         {
-            string[] args = new[] {"location:1,1,e", "obstacles:3,3", "mode:destroyer"};
+            string[] args = new[] {"location:1,1,e", "obstacles:5,5", "commands:s", "mode:explore"};
             
             RoverSettings roverSettings = _inputProcessor.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcessor.GetPlanetSettings(args);
             Engine _engine = new Engine(roverSettings, planetSettings);
-
-            IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(planetSettings.Obstacles, 20);
+            
+            IMarsSurfaceBuilder _marsSurfaceBuilder = planetSettings.MarsSurfaceBuilder;
             
             MarsSurface surface = _marsSurfaceBuilder.CreateSurface();
-            surface = _marsSurfaceBuilder.UpdateSurface(surface, new Coordinate(1,1), ">");
-            LaserShot laserShot =
-                new LaserShot(planetSettings.MarsSurfaceBuilder, new Output(20), new UtilityMethods(20), 20);
-            MarsSurface updatedSurface = laserShot.FireGun(surface, _defaultLocation.Coordinate, _defaultLocation.DirectionFacing);
+            surface = _marsSurfaceBuilder.UpdateSurface(surface, roverSettings.RoverLocation.Coordinate, ">");
+           
+            Report report = _engine.RunProgram();
             
-            Assert.Equal(surface.Surface, updatedSurface.Surface);
+            Assert.Equal(surface.Surface, report.CurrentSurface.Surface);
+            Assert.Equal(DisplaySymbol.RoverEastFacing, report.CurrentSurface.GetPoint(new Coordinate(1,1)));
         }
     }
 }

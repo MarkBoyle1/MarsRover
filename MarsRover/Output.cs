@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -64,16 +65,6 @@ namespace MarsRover
 
         public void DisplayReport(Report report)
         {
-            string[] reportData = new[]
-            {
-                "DistanceTravelled:" + report.DistanceTravelled,
-                "ObstaclesDestroyed:" + report.ObstaclesDestroyed,
-                "ObstaclesDiscovered:" + report.ObstaclesDiscovered
-            };
-
-            string filePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/MissionReport.csv";
-            File.WriteAllLinesAsync(filePath, reportData);
-            
             Console.WriteLine(OutputMessages.MissionComplete);
             Console.WriteLine(OutputMessages.DistanceTravelled + report.DistanceTravelled);
             if (report.ObstaclesDiscovered > 0)
@@ -85,6 +76,28 @@ namespace MarsRover
             {
                 Console.WriteLine(OutputMessages.ObstaclesDestroyed + report.ObstaclesDestroyed);
             }
+        }
+
+        public void CreateReportFile(Report report)
+        {
+            List<string> reportData = new List<string>()
+            {
+                "Mission Completed at:" + DateTime.Now,
+                "DistanceTravelled:" + report.DistanceTravelled,
+            };
+
+            if (report.ObstaclesDestroyed > 0)
+            {
+                reportData.Add("ObstaclesDestroyed:" + report.ObstaclesDestroyed);
+            }
+            
+            if (report.ObstaclesDiscovered > 0)
+            {
+                reportData.Add("ObstaclesDiscovered:" + report.ObstaclesDiscovered);
+            }
+
+            string filePath = @"/Users/Mark.Boyle/Desktop/c#/katas/MarsRover/MarsRover/MissionReport.csv";
+            File.WriteAllLinesAsync(filePath, reportData);
         }
     }
 }

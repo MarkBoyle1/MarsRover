@@ -17,7 +17,7 @@ namespace MarsRover
 
         public DefaultSettings()
         {
-            DefaultLocation = new RoverLocation(new Coordinate(1,1), Direction.North);
+            // DefaultLocation = new RoverLocation(new Coordinate(1,1), Direction.North);
             DefaultCommands = new string[] {"r", "f", "f", "r", "f", "f", "l", "b"};
             DefaultObstacles = new List<Coordinate>();
             DefaultMode = new Destroyer(DefaultMaxDistance);

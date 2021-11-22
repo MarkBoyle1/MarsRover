@@ -4,12 +4,7 @@ namespace MarsRover
 {
     public class RoverBehaviour
     {
-        private UtilityMethods _utility;
-        public RoverBehaviour(UtilityMethods utility)
-        {
-            _utility = utility;
-        }
-        public RoverLocation ExecuteCommand(RoverLocation location, Command command)
+        public RoverLocation ExecuteCommand(RoverLocation location, Command command, MarsSurface surface)
         {
             IBehaviour behaviour;
 
@@ -17,9 +12,17 @@ namespace MarsRover
             {
                 behaviour = new Turn(command.Instruction);
             }
+            else if (command.Instruction == RoverInstruction.ShootLaser)
+            {
+                behaviour = new Shoot(surface);
+            }
+            else if (command.Instruction == RoverInstruction.LookAhead)
+            {
+                behaviour = new LookAhead(surface);
+            }
             else
             {
-                behaviour = new Move(command.Instruction, _utility);
+                behaviour = new Move(command.Instruction);
 
             }
 

@@ -1,14 +1,11 @@
-using System;
 using MarsRover.Exceptions;
 
 namespace MarsRover
 {
-    public class UtilityMethods
+    public class MovementMethods
     {
         private int _sizeOfGrid;
-        private Random _random = new Random();
-
-        public UtilityMethods(int sizeOfGrid)
+        public MovementMethods(int sizeOfGrid)
         {
             _sizeOfGrid = sizeOfGrid;
         }
@@ -29,23 +26,21 @@ namespace MarsRover
             }
         }
         
-        public string DetermineDirectionOfRover(Direction direction)
+        public bool LocationIsOnGrid(int sizeOfGrid, Coordinate coordinate)
         {
-            switch (direction)
+            if (coordinate.XCoordinate >= sizeOfGrid || coordinate.XCoordinate < 0)
             {
-                case Direction.North:
-                    return DisplaySymbol.RoverNorthFacing;
-                case Direction.East:
-                    return DisplaySymbol.RoverEastFacing;
-                case Direction.South:
-                    return DisplaySymbol.RoverSouthFacing;
-                case Direction.West:
-                    return DisplaySymbol.RoverWestFacing;
-                default:
-                    throw new InvalidDirectionException(direction.ToString());
+                return false;
             }
-        }
+            
+            if (coordinate.YCoordinate >= sizeOfGrid || coordinate.YCoordinate < 0)
+            {
+                return false;
+            }
 
+            return true;
+        }
+        
         public Coordinate WrapAroundPlanetIfRequired(Coordinate coordinate)
         {
             int xCoordinate = AdjustIndividualCoordinate(coordinate.XCoordinate);
@@ -53,7 +48,7 @@ namespace MarsRover
         
             return new Coordinate(xCoordinate, yCoordinate);
         }
-
+        
         private int AdjustIndividualCoordinate(int coordinate)
         {
             if (coordinate < 0)
@@ -67,18 +62,6 @@ namespace MarsRover
             }
             
             return coordinate;
-        }
-        
-        public string RevealSpaceInFrontOfRover(MarsSurface surface, Coordinate coordinate)
-        {
-            string revealedSpace = surface.Surface[coordinate.YCoordinate][coordinate.XCoordinate];
-            if (revealedSpace == DisplaySymbol.UnknownSpace)
-            {
-                int randomNumber = _random.Next(1, 11);
-                return randomNumber > 2 ? DisplaySymbol.FreeSpace : DisplaySymbol.Obstacle;
-            }
-            
-            return revealedSpace;
         }
     }
 }

@@ -2,6 +2,11 @@ namespace MarsRover
 {
     public class Validations
     {
+        private int _sizeOfGrid;
+        public Validations(int sizeOfGrid)
+        {
+            _sizeOfGrid = sizeOfGrid;
+        }
         public bool LocationContainsObstacle(MarsSurface surface, RoverLocation location)
         {
             return surface.GetPoint(location.Coordinate) == DisplaySymbol.Obstacle;

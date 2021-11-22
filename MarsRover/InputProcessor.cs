@@ -14,6 +14,7 @@ namespace MarsRover
         private const string TurnRight = "r";
         private const string MoveForward = "f";
         private const string MoveBack = "b";
+        private const string Shoot = "s";
         private const string North = "n";
         private const string East = "e";
         private const string South = "s";
@@ -93,6 +94,8 @@ namespace MarsRover
                     return RoverInstruction.MoveForward;
                 case MoveBack:
                     return RoverInstruction.MoveBack;
+                case Shoot:
+                    return RoverInstruction.ShootLaser;
                 default:
                     throw new InvalidInstructionException(input);
             }
@@ -101,7 +104,7 @@ namespace MarsRover
         private RoverLocation DetermineStartingLocation(string[] args)
         {
             Coordinate coordinate = new Coordinate(1, 1);
-            Direction directionfacing = Direction.North;
+            Direction directionfacing = Direction.South;
             
             foreach (var argument in args)
             {

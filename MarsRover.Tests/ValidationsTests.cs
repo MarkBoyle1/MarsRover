@@ -5,13 +5,13 @@ namespace MarsRover.Tests
 {
     public class ValidationsTests
     {
-        private Validations _validations = new Validations();
+        private Validations _validations = new Validations(20);
 
         [Fact]
         public void given_obstacleAtOneTwo_and_RoverLocationAtOneTwo_when_LocationContainsObstacle_then_return_true()
         {
             Coordinate coordinate = new Coordinate(1, 2);
-            RoverLocation roverLocation = new RoverLocation(coordinate, Direction.East);
+            RoverLocation roverLocation = new RoverLocation(coordinate, Direction.East, DisplaySymbol.RoverEastFacing);
             Coordinate obstacle1 = new Coordinate(1, 2);
             IMarsSurfaceBuilder _marsSurfaceBuilder = new MarsSurfaceBuilder(new List<Coordinate>(){obstacle1}, 20);
 
