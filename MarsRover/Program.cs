@@ -23,8 +23,8 @@ namespace MarsRover
                 _output.DisplayMessage(OutputMessages.FileNotFound);
             }
             
-            RoverSettings roverSettings = _inputProcessor.GetRoverSettings(args);
             PlanetSettings planetSettings = _inputProcessor.GetPlanetSettings(args);
+            RoverSettings roverSettings = _inputProcessor.GetRoverSettings(args);
             Engine engine = new Engine(roverSettings, planetSettings);
             
             engine.RunProgram();

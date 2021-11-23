@@ -35,6 +35,7 @@ namespace MarsRover
         private const string MapObjective = "mode:map";
         private const string ExploreObjective = "mode:explore";
         private const string DestroyerObjective = "mode:destroyer";
+        private int _sizeOfGrid = DefaultSettings.DefaultGridSize;
         
 
         public RoverSettings GetRoverSettings(string[] args)
@@ -50,10 +51,10 @@ namespace MarsRover
         public PlanetSettings GetPlanetSettings(string[] args)
         {
             List<Coordinate> obstacles = TurnObstacleInputsIntoCoordinates(args);
-            int sizeOfGrid = GetSizeOfGrid(args);
-            IMarsSurfaceBuilder marsSurfaceBuilder = GetTypeOfBuilder(args, sizeOfGrid, obstacles);
+            _sizeOfGrid = GetSizeOfGrid(args);
+            IMarsSurfaceBuilder marsSurfaceBuilder = GetTypeOfBuilder(args, _sizeOfGrid, obstacles);
 
-            return new PlanetSettings(sizeOfGrid, obstacles, marsSurfaceBuilder);
+            return new PlanetSettings(_sizeOfGrid, obstacles, marsSurfaceBuilder);
         }
 
         private List<Command> GetListOfCommands(string[] args)
@@ -116,6 +117,12 @@ namespace MarsRover
                     int yCoordinate = Convert.ToInt32(startingLocation[1]);
                     coordinate = new Coordinate(xCoordinate, yCoordinate);
                     directionfacing = DetermineDirection(startingLocation[2]);
+
+                    if (xCoordinate < 0 || xCoordinate > _sizeOfGrid || yCoordinate < 0 || yCoordinate > _sizeOfGrid)
+                    {
+                        coordinate = new Coordinate(1, 1);
+                        directionfacing = Direction.South;
+                    }
                 }
             }
 
@@ -169,7 +176,8 @@ namespace MarsRover
             {
                 if (argument.StartsWith(MaxDistanceTag))
                 {
-                     return Convert.ToInt32(argument.Remove(0,12));
+                     int maxdistance = Convert.ToInt32(argument.Remove(0,12));
+                     return NumberIsPositive(maxdistance) ? maxdistance : DefaultSettings.DefaultMaxDistance;
                 }
             }
 
@@ -213,7 +221,8 @@ namespace MarsRover
             {
                 if (argument.StartsWith(GridSizeTag))
                 {
-                    return Convert.ToInt32(argument.Remove(0,9));
+                    int gridsize = Convert.ToInt32(argument.Remove(0,9));
+                    return NumberIsPositive(gridsize) ? gridsize : DefaultSettings.DefaultGridSize;
                 }
             }
 
@@ -272,6 +281,11 @@ namespace MarsRover
             }
 
             return updatedArgs.ToArray();
+        }
+
+        private bool NumberIsPositive(int number)
+        {
+            return number > 0;
         }
     }
 }
